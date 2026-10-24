@@ -24,6 +24,7 @@ button,select{font:inherit;cursor:pointer}.app{max-width:1440px;margin:auto;min-
 @media(max-width:520px){.admin-form{grid-template-columns:1fr}.admin-form .wide{grid-column:auto}.data-item{align-items:flex-start;flex-direction:column}}
 
 .tournament-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.tournament-card{overflow:hidden;border:1px solid var(--line);border-left:3px solid var(--event-color,#8b5cf6);border-radius:14px;background:#0d111b}.event-image{width:100%;height:145px;object-fit:cover;display:block;background:#171b2a}.event-body{padding:15px}.event-meta,.event-facts{display:flex;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:11px}.event-meta span{border:1px solid #34364b;border-radius:20px;padding:3px 8px;text-transform:uppercase}.event-body h3{margin:10px 0 4px;font-size:17px}.event-body p{margin:0 0 13px;color:var(--muted);font-size:12px}.event-facts span{background:#171c2a;padding:5px 8px;border-radius:7px}.event-prize{margin-top:11px;color:#c9b7ff;font-size:12px;font-weight:800}.admin-form input[type=color]{min-height:42px;padding:4px}.admin-form input[type=checkbox]{height:18px;width:18px;accent-color:var(--purple)}
+.emote-picker{grid-column:1/-1;border:1px solid var(--line);border-radius:12px;padding:14px;background:#0d111b}.emote-picker-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.emote-picker-head strong{color:var(--text)}.emote-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.emote-option{display:flex;align-items:center;gap:8px;border:1px solid #30374a;border-radius:9px;padding:9px;background:#111624;color:#dfe3f2;font-size:12px;cursor:pointer}.emote-option:has(input:checked){border-color:var(--purple);background:#8b5cf61c}.emote-option input{flex-shrink:0}.emote-summary{font-size:12px;color:var(--muted);margin-top:10px}@media(max-width:650px){.emote-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.tournament-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -81,6 +82,23 @@ button,select{font:inherit;cursor:pointer}.app{max-width:1440px;margin:auto;min-
         <label><span>Count on leaderboard</span><input id="t-leaderboard" type="checkbox" checked style="width:auto;align-self:flex-start"></label>
         <label><span>Invitation only</span><input id="t-invitation" type="checkbox" style="width:auto;align-self:flex-start"></label>
         <label><span>Enable emotes</span><input id="t-emotes" type="checkbox" checked style="width:auto;align-self:flex-start"></label>
+        <div class="emote-picker" id="emote-picker">
+          <div class="emote-picker-head"><strong>Allowed emotes</strong><div class="admin-actions"><button class="secondary" type="button" id="emotes-all">Select all</button><button class="secondary" type="button" id="emotes-none">Clear</button></div></div>
+          <div class="emote-grid" id="emote-grid">
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="GG"> <span>👍 GG / Thumbs Up</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Clap"> <span>👏 Clap</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Heart"> <span>❤️ Heart</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Laugh"> <span>😂 Laugh</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Cry"> <span>😭 Cry</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Angry"> <span>😡 Angry</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Dance"> <span>🕺 Dance</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Wave"> <span>👋 Wave</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="ThumbsDown"> <span>👎 Thumbs Down</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Punch"> <span>👊 Punch</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Kick"> <span>🦶 Kick</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="GGWP"> <span>🏆 GGWP</span></label>
+          </div><div class="emote-summary" id="emote-summary">0 emotes selected</div>
+        </div>
         <div class="wide admin-actions"><button class="primary" type="submit" id="t-submit">Create tournament</button><button class="secondary" type="button" id="t-cancel" hidden>Cancel edit</button></div>
       </form>
       <h3>Existing tournaments</h3><div class="data-list" id="admin-tournaments"><div class="empty">Loading…</div></div>
@@ -212,8 +230,19 @@ async function checkAdmin(session) {
   if (adminAccess) await loadAdminData();
 }
 
+const emoteInputs = () => [...document.querySelectorAll('input[name="enabled-emote"]')];
+function getSelectedEmotes() { return emoteInputs().filter(input => input.checked).map(input => input.value); }
+function setSelectedEmotes(values) { const chosen = new Set(values || []); emoteInputs().forEach(input => { input.checked = chosen.has(input.value); }); }
+function updateEmoteSummary() { const chosen = getSelectedEmotes(); document.getElementById('emote-summary').textContent = `${chosen.length} emote${chosen.length === 1 ? '' : 's'} selected${document.getElementById('t-emotes').checked ? '' : ' · emotes disabled for this tournament'}`; }
+emoteInputs().forEach(input => input.addEventListener('change', updateEmoteSummary));
+document.getElementById('emotes-all').addEventListener('click', () => { emoteInputs().forEach(input => input.checked = true); updateEmoteSummary(); });
+document.getElementById('emotes-none').addEventListener('click', () => { emoteInputs().forEach(input => input.checked = false); updateEmoteSummary(); });
+document.getElementById('t-emotes').addEventListener('change', updateEmoteSummary);
+
 function resetTournamentForm() {
   document.getElementById('tournament-form').reset();
+  setSelectedEmotes(['GG','Clap','Heart','Laugh']);
+  updateEmoteSummary();
   document.getElementById('edit-tournament-id').value = '';
   document.getElementById('tournament-form-title').textContent = 'Create tournament';
   document.getElementById('t-submit').textContent = 'Create tournament';
@@ -253,7 +282,8 @@ document.getElementById('tournament-form').addEventListener('submit', async (eve
     enable_phase_groups: document.getElementById('t-phasegroups').checked,
     count_on_leaderboard: document.getElementById('t-leaderboard').checked,
     invitation_only: document.getElementById('t-invitation').checked,
-    enable_emotes: document.getElementById('t-emotes').checked
+    enable_emotes: document.getElementById('t-emotes').checked,
+    enabled_emotes: getSelectedEmotes()
   };
   try {
     const request = editId
@@ -294,7 +324,7 @@ document.getElementById('result-form').addEventListener('submit', async (event) 
 async function loadAdminData() {
   if (!adminAccess) return;
   const [tRes, pRes, rRes] = await Promise.all([
-    supabaseClient.from('tournaments').select('id,name,mode,status,starts_at,signup_starts_at,image_url,color,party_size,max_players,entry_fee,prize_type,prizepool,region,tournament_type,total_rounds,max_teams,number_groups,stream_url,invited_user_ids,maps,description,phase_config,enable_phase_groups,count_on_leaderboard,invitation_only,enable_emotes').order('starts_at',{ascending:true}),
+    supabaseClient.from('tournaments').select('id,name,mode,status,starts_at,signup_starts_at,image_url,color,party_size,max_players,entry_fee,prize_type,prizepool,region,tournament_type,total_rounds,max_teams,number_groups,stream_url,invited_user_ids,maps,description,phase_config,enable_phase_groups,count_on_leaderboard,invitation_only,enable_emotes,enabled_emotes').order('starts_at',{ascending:true}),
     supabaseClient.from('profiles').select('id,username,discord_id'),
     supabaseClient.from('tournament_results').select('id,tournament_id,player_id,placement,points').order('created_at',{ascending:false}).limit(30)
   ]);
@@ -348,6 +378,8 @@ async function loadAdminData() {
     document.getElementById('t-leaderboard').checked = t.count_on_leaderboard !== false;
     document.getElementById('t-invitation').checked = !!t.invitation_only;
     document.getElementById('t-emotes').checked = t.enable_emotes !== false;
+    setSelectedEmotes(Array.isArray(t.enabled_emotes) ? t.enabled_emotes : ['GG','Clap','Heart','Laugh']);
+    updateEmoteSummary();
     document.getElementById('tournament-form-title').textContent = 'Edit tournament';
     document.getElementById('t-submit').textContent = 'Save changes';
     document.getElementById('t-cancel').hidden = false;
@@ -378,7 +410,7 @@ async function loadAdminData() {
 
 async function loadPublicData() {
   const [tournaments, profiles, results] = await Promise.all([
-    supabaseClient.from('tournaments').select('id,name,mode,status,starts_at,signup_starts_at,image_url,color,party_size,max_players,entry_fee,prize_type,prizepool,region,tournament_type,total_rounds,max_teams,number_groups,stream_url,invited_user_ids,maps,description,phase_config,enable_phase_groups,count_on_leaderboard,invitation_only,enable_emotes').order('starts_at',{ascending:true}),
+    supabaseClient.from('tournaments').select('id,name,mode,status,starts_at,signup_starts_at,image_url,color,party_size,max_players,entry_fee,prize_type,prizepool,region,tournament_type,total_rounds,max_teams,number_groups,stream_url,invited_user_ids,maps,description,phase_config,enable_phase_groups,count_on_leaderboard,invitation_only,enable_emotes,enabled_emotes').order('starts_at',{ascending:true}),
     supabaseClient.from('profiles').select('id'),
     supabaseClient.from('tournament_results').select('id')
   ]);
