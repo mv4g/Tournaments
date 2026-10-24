@@ -85,18 +85,28 @@ button,select{font:inherit;cursor:pointer}.app{max-width:1440px;margin:auto;min-
         <div class="emote-picker" id="emote-picker">
           <div class="emote-picker-head"><strong>Allowed emotes</strong><div class="admin-actions"><button class="secondary" type="button" id="emotes-all">Select all</button><button class="secondary" type="button" id="emotes-none">Clear</button></div></div>
           <div class="emote-grid" id="emote-grid">
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="GG"> <span>👍 GG / Thumbs Up</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Clap"> <span>👏 Clap</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Heart"> <span>❤️ Heart</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Laugh"> <span>😂 Laugh</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Cry"> <span>😭 Cry</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Angry"> <span>😡 Angry</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Dance"> <span>🕺 Dance</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Wave"> <span>👋 Wave</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="ThumbsDown"> <span>👎 Thumbs Down</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Punch"> <span>👊 Punch</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Kick"> <span>🦶 Kick</span></label>
-            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="GGWP"> <span>🏆 GGWP</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Punch"> <span>Punch</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Kick"> <span>Kick</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Hug"> <span>Hug</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Banana"> <span>Banana</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Fire Punch"> <span>Fire Punch</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Wet Kick"> <span>Wet Kick</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Golden Banana"> <span>Golden Banana</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Charged Hug"> <span>Charged Hug</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="MrBeast Case"> <span>MrBeast Case</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Ball"> <span>Ball</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Invisibility"> <span>Invisibility</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Beast Lightning"> <span>Beast Lightning</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Spatula Slap"> <span>Spatula Slap</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Karate Chop"> <span>Karate Chop</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Snowball Throw"> <span>Snowball Throw</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Toss A Block"> <span>Toss A Block</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Force Shield"> <span>Force Shield</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Water Spray"> <span>Water Spray</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Sword Spin"> <span>Sword Spin</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="D20 Roll"> <span>D20 Roll</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Power Jump"> <span>Power Jump</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Rake Throw"> <span>Rake Throw</span></label>
           </div><div class="emote-summary" id="emote-summary">0 emotes selected</div>
         </div>
         <div class="wide admin-actions"><button class="primary" type="submit" id="t-submit">Create tournament</button><button class="secondary" type="button" id="t-cancel" hidden>Cancel edit</button></div>
@@ -241,7 +251,7 @@ document.getElementById('t-emotes').addEventListener('change', updateEmoteSummar
 
 function resetTournamentForm() {
   document.getElementById('tournament-form').reset();
-  setSelectedEmotes(['GG','Clap','Heart','Laugh']);
+  setSelectedEmotes(['Punch','Kick','Hug','Banana']);
   updateEmoteSummary();
   document.getElementById('edit-tournament-id').value = '';
   document.getElementById('tournament-form-title').textContent = 'Create tournament';
@@ -378,7 +388,7 @@ async function loadAdminData() {
     document.getElementById('t-leaderboard').checked = t.count_on_leaderboard !== false;
     document.getElementById('t-invitation').checked = !!t.invitation_only;
     document.getElementById('t-emotes').checked = t.enable_emotes !== false;
-    setSelectedEmotes(Array.isArray(t.enabled_emotes) ? t.enabled_emotes : ['GG','Clap','Heart','Laugh']);
+    setSelectedEmotes(Array.isArray(t.enabled_emotes) ? t.enabled_emotes : ['Punch','Kick','Hug','Banana']);
     updateEmoteSummary();
     document.getElementById('tournament-form-title').textContent = 'Edit tournament';
     document.getElementById('t-submit').textContent = 'Save changes';
