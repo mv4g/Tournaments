@@ -1,263 +1,445 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stumble Labs Admin</title>
-  <style>
-    /* Styles for the admin page */
-    body { font-family: Arial, sans-serif; }
-    #admin-page { margin: 20px; }
-    #admin-page h1 { margin-top: 0; }
-    #admin-page .empty { color: red; }
-    .tournament-card { margin-bottom: 10px; }
-    .event-image { width: 150px; height: auto; }
-    .event-body { padding: 10px; }
-    .event-meta { display: flex; justify-content: space-between; margin-bottom: 5px; }
-    .event-meta span { font-weight: bold; margin-right: 5px; color: #8b5cf6; }
-    .event-facts span { color: #8b5cf6; margin-right: 5px; }
-    .event-prize { color: #8b5cf6; font-weight: bold; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b12">
+<title>Stumble Labs | Tournament Hub</title>
+<style>
+:root{--bg:#090b12;--panel:#111521;--line:#252c3d;--text:#f4f6ff;--muted:#8e97ad;--purple:#8b5cf6;--cyan:#50e3d1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% -10%,#29204d 0,transparent 42%),var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,select{font:inherit;cursor:pointer}.app{max-width:1440px;margin:auto;min-height:100vh}.top{display:flex;align-items:center;gap:24px;padding:20px clamp(16px,4vw,48px);border-bottom:1px solid #252a3a;position:sticky;top:0;background:#090b12ef;backdrop-filter:blur(18px);z-index:5}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:18px;white-space:nowrap}.logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(140deg,#b99aff,#6d42d9);display:grid;place-items:center;font-weight:900}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px}
+.nav{display:flex;gap:5px;align-items:center;flex:1;overflow-x:auto}.nav button{border:0;background:transparent;color:var(--muted);padding:10px 13px;border-radius:10px;font-weight:650;white-space:nowrap}.nav button.active,.nav button:hover{color:white;background:#ffffff0d}.tools{display:flex;align-items:center;gap:10px}.sign{border:1px solid #3b3158;background:#211837;color:#dcd0ff;padding:10px 14px;border-radius:11px;font-weight:750;white-space:nowrap}.main{padding:34px clamp(16px,4vw,48px) 60px}.hero{position:relative;overflow:hidden;border:1px solid #383052;border-radius:24px;padding:clamp(24px,5vw,52px);background:linear-gradient(115deg,#21183c,#15182b 48%,#10252c);min-height:250px;display:flex;align-items:center;justify-content:space-between;gap:20px}.hero-copy{max-width:650px;z-index:1}.tag{display:inline-flex;align-items:center;gap:7px;border:1px solid #ffffff25;border-radius:100px;padding:6px 10px;color:#d9d0ff;font-size:12px;font-weight:700}.pulse{width:7px;height:7px;background:var(--cyan);border-radius:50%}.hero h1{font-size:clamp(32px,5vw,54px);line-height:1.04;letter-spacing:-2px;margin:13px 0}.hero p{color:#b5bad0;max-width:550px;margin:0 0 23px}.primary{border:0;background:linear-gradient(100deg,#9a70ff,#7350df);color:white;padding:12px 17px;border-radius:11px;font-weight:800}.hero-mark{font-size:clamp(70px,13vw,140px);font-weight:950;color:#ffffff0c;letter-spacing:-12px;margin-right:5%}
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:34px 0 16px}.head h2{font-size:20px;margin:0}.head p{margin:4px 0 0;color:var(--muted);font-size:13px}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat,.panel{background:linear-gradient(145deg,#141927,#10131d);border:1px solid var(--line);border-radius:16px}.stat{padding:19px}.stat-top{color:var(--muted);font-size:12px;font-weight:700}.number{font-size:30px;font-weight:850;margin:13px 0 1px}.sub,.muted{color:var(--muted);font-size:12px}.content-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:15px}.panel{padding:21px;min-height:190px}.panel h3{margin:0;font-size:16px}.desc{color:var(--muted);font-size:13px;margin:5px 0 20px}.empty{min-height:115px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:var(--muted);gap:7px;border:1px dashed #30374a;border-radius:12px;padding:18px}.empty b{color:#dfe3f2;font-size:13px}.empty span{font-size:12px}.modes{display:flex;gap:9px;flex-wrap:wrap}.mode{border:1px solid var(--line);background:#131826;color:#aab2c8;border-radius:10px;padding:10px 15px;font-weight:750}.mode.selected{color:#eee7ff;border-color:var(--purple);background:#8b5cf61c}.page{display:none}.page.active{display:block}.notice{border:1px solid #53432a;background:#2a2115;color:#e7cda3;padding:13px 15px;border-radius:12px;margin-top:17px;font-size:12px}.profile-box{display:flex;align-items:center;gap:16px;margin-bottom:20px}.avatar{width:56px;height:56px;border-radius:17px;background:linear-gradient(135deg,#9c7cff,#41306e);display:grid;place-items:center;font-size:24px;font-weight:900}.footer{color:#687187;font-size:12px;text-align:center;padding:24px 10px 6px}
+@media(max-width:900px){.top{flex-wrap:wrap;gap:13px}.nav{order:3;flex-basis:100%}.tools{margin-left:auto}.hero-mark{display:none}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.content-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.top{padding:13px 14px}.brand{font-size:16px}.sign{padding:9px 10px;font-size:12px}.nav button{padding:10px 11px;font-size:13px}.main{padding:20px 14px 40px}.hero{border-radius:18px;padding:25px 20px}.hero h1{letter-spacing:-1.4px}.cards{gap:9px}.stat{padding:14px}.number{font-size:26px}.panel{padding:16px}}
+
+.admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0 20px}
+.admin-form label{display:flex;flex-direction:column;gap:6px;color:var(--muted);font-size:12px;font-weight:700}
+.admin-form input,.admin-form select,.admin-form textarea{width:100%;background:#0c101a;color:var(--text);border:1px solid #30374a;border-radius:9px;padding:11px;font:inherit}
+.admin-form textarea{min-height:75px;resize:vertical}.admin-form .wide{grid-column:1/-1}
+.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.secondary{border:1px solid var(--line);background:#171c2a;color:var(--text);padding:10px 13px;border-radius:9px;font-weight:700}
+.data-list{display:grid;gap:10px}.data-item{border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;justify-content:space-between;align-items:center;gap:12px}.data-item small{display:block;color:var(--muted);margin-top:3px}.data-item .admin-actions{flex-shrink:0}
+@media(max-width:520px){.admin-form{grid-template-columns:1fr}.admin-form .wide{grid-column:auto}.data-item{align-items:flex-start;flex-direction:column}}
+
+.tournament-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.tournament-card{overflow:hidden;border:1px solid var(--line);border-left:3px solid var(--event-color,#8b5cf6);border-radius:14px;background:#0d111b}.event-image{width:100%;height:145px;object-fit:cover;display:block;background:#171b2a}.event-body{padding:15px}.event-meta,.event-facts{display:flex;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:11px}.event-meta span{border:1px solid #34364b;border-radius:20px;padding:3px 8px;text-transform:uppercase}.event-body h3{margin:10px 0 4px;font-size:17px}.event-body p{margin:0 0 13px;color:var(--muted);font-size:12px}.event-facts span{background:#171c2a;padding:5px 8px;border-radius:7px}.event-prize{margin-top:11px;color:#c9b7ff;font-size:12px;font-weight:800}.admin-form input[type=color]{min-height:42px;padding:4px}.admin-form input[type=checkbox]{height:18px;width:18px;accent-color:var(--purple)}
+.emote-picker{grid-column:1/-1;border:1px solid var(--line);border-radius:12px;padding:14px;background:#0d111b}.emote-picker-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.emote-picker-head strong{color:var(--text)}.emote-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.emote-option{display:flex;align-items:center;gap:8px;border:1px solid #30374a;border-radius:9px;padding:9px;background:#111624;color:#dfe3f2;font-size:12px;cursor:pointer}.emote-option:has(input:checked){border-color:var(--purple);background:#8b5cf61c}.emote-option input{flex-shrink:0}.emote-summary{font-size:12px;color:var(--muted);margin-top:10px}@media(max-width:650px){.emote-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.tournament-grid{grid-template-columns:1fr}}
+</style>
 </head>
-<body>
-  <div id="admin-page">
-    <h1>Stumble Labs Admin</h1>
-    <div id="tournaments" class="admin-section">
-      <h2>Tournaments</h2>
-      <div id="t-box" class="admin-section" style="display: none;">
-        <select id="t-select" class="admin-section" onchange="document.getElementById('admin-tournament').style.display = this.value">
-          <option value="" selected disabled hidden>Select tournament</option>
-          <!-- Tournaments will be populated here -->
-        </select>
-        <button class="secondary" onclick="document.getElementById('admin-tournament').style.display = 'block'">Add Tournament</button>
-      </div>
-      <div id="t-box" class="admin-section" style="display: none;">
-        <form id="tournament-form" method="POST" action="/admin/tournament" enctype="multipart/form-data">
-          <label for="t-name">Name:</label>
-          <input id="t-name" type="text" name="name" required>
-          <label for="t-mode">Mode:</label>
-          <select id="t-mode" name="mode" required>
-            <option value="1v1">1v1</option>
-            <option value="2v2">2v2</option>
-          </select>
-          <label for="t-status">Status:</label>
-          <select id="t-status" name="status" required>
-            <option value="upcoming">Upcoming</option>
-            <option value="live">Live</option>
-            <option value="completed">Completed</option>
-          </select>
-          <label for="t-starts-at">Starts at:</label>
-          <input id="t-starts-at" type="datetime-local" name="starts-at" required>
-          <label for="t-signup">Signup starts at:</label>
-          <input id="t-signup" type="datetime-local" name="signup-starts-at" required>
-          <label for="t-image">Image URL:</label>
-          <input id="t-image" type="text" name="image-url" required>
-          <label for="t-color">Color:</label>
-          <input id="t-color" type="color" name="color" required>
-          <label for="t-party">Party Size:</label>
-          <input id="t-party" type="number" name="party-size" min="1" max="16" required>
-          <label for="t-maxplayers">Max Players:</label>
-          <input id="t-maxplayers" type="number" name="max-players" min="1" max="16" required>
-          <label for="t-entryfee">Entry Fee:</label>
-          <input id="t-entryfee" type="number" name="entry-fee" min="0" max="100" required>
-          <label for="t-prizetype">Prize Type:</label>
-          <input id="t-prizetype" type="text" name="prize-type" required>
-          <label for="t-prizepool">Prize Pool:</label>
-          <input id="t-prizepool" type="text" name="prize-pool" required>
-          <label for="t-region">Region:</label>
-          <input id="t-region" type="text" name="region" required>
-          <label for="t-type">Type:</label>
-          <input id="t-type" type="text" name="type" required>
-          <label for="t-rounds">Rounds:</label>
-          <input id="t-rounds" type="number" name="total-rounds" min="1" max="100" required>
-          <label for="t-maxteams">Max Teams:</label>
-          <input id="t-maxteams" type="number" name="max-teams" min="1" max="16" required>
-          <label for="t-groups">Groups:</label>
-          <input id="t-groups" type="number" name="number-groups" min="1" max="10" required>
-          <label for="t-stream">Stream URL:</label>
-          <input id="t-stream" type="text" name="stream-url" required>
-          <label for="t-invited">Invited Users:</label>
-          <input id="t-invited" type="text" name="invited-users" required>
-          <label for="t-maps">Maps:</label>
-          <input id="t-maps" type="text" name="maps" required>
-          <label for="t-description">Description:</label>
-          <textarea id="t-description" name="description" required></textarea>
-          <label for="t-phases">Phases:</label>
-          <textarea id="t-phases" name="phase-config" required></textarea>
-          <label for="t-phasegroups">Enable Phase Groups:</label>
-          <input id="t-phasegroups" type="checkbox" name="enable-phase-groups" required>
-          <label for="t-leaderboard">Count on Leaderboard:</label>
-          <input id="t-leaderboard" type="checkbox" name="count-on-leaderboard" required>
-          <label for="t-invitation">Invitation Only:</label>
-          <input id="t-invitation" type="checkbox" name="invitation-only" required>
-          <label for="t-emotes">Enable Emotes:</label>
-          <input id="t-emotes" type="checkbox" name="enable-emotes" required>
-          <div id="emotes" style="display: none;">
-            <input id="GG" type="checkbox" name="enabled-emotes" value="GG">
-            <label for="GG">GG</label>
-            <input id="Clap" type="checkbox" name="enabled-emotes" value="Clap">
-            <label for="Clap">Clap</label>
-            <input id="Heart" type="checkbox" name="enabled-emotes" value="Heart">
-            <label for="Heart">Heart</label>
-            <input id="Laugh" type="checkbox" name="enabled-emotes" value="Laugh">
-            <label for="Laugh">Laugh</label>
-          </div>
-          <div id="tournament-submit" style="display: none;">
-            <button id="t-submit" type="submit">Save Changes</button>
-            <button id="t-cancel" type="button" style="display: none">Cancel</button>
-          </div>
-        </form>
-      </div>
-      <div id="t-box" class="admin-section" style="display: none;">
-        <h2>Update Tournament</h2>
-        <form id="edit-tournament-form" method="POST" action="/admin/tournament" enctype="multipart/form-data">
-          <label for="edit-tournament-id">ID:</label>
-          <input id="edit-tournament-id" type="number" name="id" required>
-          <label for="t-name">Name:</label>
-          <input id="t-name" type="text" name="name" required>
-          <label for="t-mode">Mode:</label>
-          <select id="t-mode" name="mode" required>
-            <option value="1v1">1v1</option>
-            <option value="2v2">2v2</option>
-          </select>
-          <label for="t-status">Status:</label>
-          <select id="t-status" name="status" required>
-            <option value="upcoming">Upcoming</option>
-            <option value="live">Live</option>
-            <option value="completed">Completed</option>
-          </select>
-          <label for="t-starts-at">Starts at:</label>
-          <input id="t-starts-at" type="datetime-local" name="starts-at" required>
-          <label for="t-signup">Signup starts at:</label>
-          <input id="t-signup" type="datetime-local" name="signup-starts-at" required>
-          <label for="t-image">Image URL:</label>
-          <input id="t-image" type="text" name="image-url" required>
-          <label for="t-color">Color:</label>
-          <input id="t-color" type="color" name="color" required>
-          <label for="t-party">Party Size:</label>
-          <input id="t-party" type="number" name="party-size" min="1" max="16" required>
-          <label for="t-maxplayers">Max Players:</label>
-          <input id="t-maxplayers" type="number" name="max-players" min="1" max="16" required>
-          <label for="t-entryfee">Entry Fee:</label>
-          <input id="t-entryfee" type="number" name="entry-fee" min="0" max="100" required>
-          <label for="t-prizetype">Prize Type:</label>
-          <input id="t-prizetype" type="text" name="prize-type" required>
-          <label for="t-prizepool">Prize Pool:</label>
-          <input id="t-prizepool" type="text" name="prize-pool" required>
-          <label for="t-region">Region:</label>
-          <input id="t-region" type="text" name="region" required>
-          <label for="t-type">Type:</label>
-          <input id="t-type" type="text" name="type" required>
-          <label for="t-rounds">Rounds:</label>
-          <input id="t-rounds" type="number" name="total-rounds" min="1" max="100" required>
-          <label for="t-maxteams">Max Teams:</label>
-          <input id="t-maxteams" type="number" name="max-teams" min="1" max="16" required>
-          <label for="t-groups">Groups:</label>
-          <input id="t-groups" type="number" name="number-groups" min="1" max="10" required>
-          <label for="t-stream">Stream URL:</label>
-          <input id="t-stream" type="text" name="stream-url" required>
-          <label for="t-invited">Invited Users:</label>
-          <input id="t-invited" type="text" name="invited-users" required>
-          <label for="t-maps">Maps:</label>
-          <input id="t-maps" type="text" name="maps" required>
-          <label for="t-description">Description:</label>
-          <textarea id="t-description" name="description" required></textarea>
-          <label for="t-phases">Phases:</label>
-          <textarea id="t-phases" name="phase-config" required></textarea>
-          <label for="t-phasegroups">Enable Phase Groups:</label>
-          <input id="t-phasegroups" type="checkbox" name="enable-phase-groups" required>
-          <label for="t-leaderboard">Count on Leaderboard:</label>
-          <input id="t-leaderboard" type="checkbox" name="count-on-leaderboard" required>
-          <label for="t-invitation">Invitation Only:</label>
-          <input id="t-invitation" type="checkbox" name="invitation-only" required>
-          <label for="t-emotes">Enable Emotes:</label>
-          <input id="t-emotes" type="checkbox" name="enable-emotes" required>
-          <div id="emotes" style="display: none;">
-            <input id="GG" type="checkbox" name="enabled-emotes" value="GG">
-            <label for="GG">GG</label>
-            <input id="Clap" type="checkbox" name="enabled-emotes" value="Clap">
-            <label for="Clap">Clap</label>
-            <input id="Heart" type="checkbox" name="enabled-emotes" value="Heart">
-            <label for="Heart">Heart</label>
-            <input id="Laugh" type="checkbox" name="enabled-emotes" value="Laugh">
-            <label for="Laugh">Laugh</label>
-          </div>
-          <div id="tournament-submit" style="display: none;">
-            <button id="t-submit" type="submit">Update</button>
-            <button id="t-cancel" type="button" style="display: none">Cancel</button>
-          </div>
-        </form>
-      </div>
-      <div id="t-box" class="admin-section" style="display: none;">
-        <h2>Update Tournament</h2>
-        <form id="edit-tournament-form" method="POST" action="/admin/tournament" enctype="multipart/form-data">
-          <label for="edit-tournament-id">ID:</label>
-          <input id="edit-tournament-id" type="number" name="id" required>
-          <label for="t-name">Name:</label>
-          <input id="t-name" type="text" name="name" required>
-          <label for="t-mode">Mode:</label>
-          <select id="t-mode" name="mode" required>
-            <option value="1v1">1v1</option>
-            <option value="2v2">2v2</option>
-          </select>
-          <label for="t-status">Status:</label>
-          <select id="t-status" name="status" required>
-            <option value="upcoming">Upcoming</option>
-            <option value="live">Live</option>
-            <option value="completed">Completed</option>
-          </select>
-          <label for="t-starts-at">Starts at:</label>
-          <input id="t-starts-at" type="datetime-local" name="starts-at" required>
-          <label for="t-signup">Signup starts at:</label>
-          <input id="t-signup" type="datetime-local" name="signup-starts-at" required>
-          <label for="t-image">Image URL:</label>
-          <input id="t-image" type="text" name="image-url" required>
-          <label for="t-color">Color:</label>
-          <input id="t-color" type="color" name="color" required>
-          <label for="t-party">Party Size:</label>
-          <input id="t-party" type="number" name="party-size" min="1" max="16" required>
-          <label for="t-maxplayers">Max Players:</label>
-          <input id="t-maxplayers" type="number" name="max-players" min="1" max="16" required>
-          <label for="t-entryfee">Entry Fee:</label>
-          <input id="t-entryfee" type="number" name="entry-fee" min="0" max="100" required>
-          <label for="t-prizetype">Prize Type:</label>
-          <input id="t-prizetype" type="text" name="prize-type" required>
-          <label for="t-prizepool">Prize Pool:</label>
-          <input id="t-prizepool" type="text" name="prize-pool" required>
-          <label for="t-region">Region:</label>
-          <input id="t-region" type="text" name="region" required>
-          <label for="t-type">Type:</label>
-          <input id="t-type" type="text" name="type" required>
-          <label for="t-rounds">Rounds:</label>
-          <input id="t-rounds" type="number" name="total-rounds" min="1" max="100" required>
-          <label for="t-maxteams">Max Teams:</label>
-          <input id="t-maxteams" type="number" name="max-teams" min="1" max="16" required>
-          <label for="t-groups">Groups:</label>
-          <input id="t-groups" type="number" name="number-groups" min="1" max="10" required>
-          <label for="t-stream">Stream URL:</label>
-          <input id="t-stream" type="text" name="stream-url" required>
-          <label for="t-invited">Invited Users:</label>
-          <input id="t-invited" type="text" name="invited-users" required>
-          <label for="t-maps">Maps:</label>
-          <input id="t-maps" type="text" name="maps" required>
-          <label for="t-description">Description:</label>
-          <textarea id="t-description" name="description" required></textarea>
-          <label for="t-phases">Phases:</label>
-          <textarea id="t-phases" name="phase-config" required></textarea>
-          <label for="t-phasegroups">Enable Phase Groups:</label>
-          <input id="t-phasegroups" type="checkbox" name="enable-phase-groups" required>
-          <label for="t-leaderboard">Count on Leaderboard:</label>
-          <input id="t-leaderboard" type="checkbox" name="count-on-leaderboard" required>
-          <label for="t-invitation">Invitation Only:</label>
-          <input id="t-invitation" type="checkbox" name="invitation-only" required>
-          <label for="t-emotes">Enable Emotes:</label>
-          <input id="t-emotes" type="checkbox" name="enable-emotes" required>
-          <div id="tournament-submit" style="display: none;">
-            <button id="t-submit" type="submit">Update</button>
-            <button id="t-cancel" type="button" style="display: none">Cancel</button>
-          </div>
-        </form>
-      </div>
+<body><div class="app">
+<header class="top">
+  <div class="brand"><div class="logo">SL</div><div>STUMBLE LABS<small>COMPETITIVE HUB</small></div></div>
+  <nav class="nav" aria-label="Main navigation"><button class="active" data-page="dashboard">Dashboard</button><button data-page="statistics">Statistics</button><button data-page="tournaments">Tournaments</button><button data-page="leaderboard">Leaderboard</button><button data-page="profile">Profile</button><button data-page="admin" id="admin-nav" hidden>Admin</button></nav>
+  <div class="tools"><button class="sign" id="signin">Discord Login ↗</button></div>
+</header>
+<main class="main">
+<section class="page active" id="page-dashboard">
+  <div class="hero"><div class="hero-copy"><div class="tag"><i class="pulse"></i> COMMUNITY TOURNAMENT PLATFORM</div><h1>Play sharp.<br>Climb higher.</h1><p>Your home for competitive Stumble Guys. Explore tournaments, track results, and find your next match.</p><button class="primary" data-go="tournaments">Explore tournaments ↗</button></div><div class="hero-mark">SL</div></div>
+  <div class="head"><div><h2>Platform overview</h2><p>Statistics will appear when records are added.</p></div><span class="muted">SUPABASE CONNECTED</span></div>
+  <div class="cards"><div class="stat"><div class="stat-top">Total tournaments</div><div class="number" id="tournament-count">0</div><div class="sub">Recorded tournaments</div></div><div class="stat"><div class="stat-top">Registered players</div><div class="number" id="player-count">0</div><div class="sub">Registered profiles</div></div><div class="stat"><div class="stat-top">Matches played</div><div class="number" id="match-count">0</div><div class="sub">Recorded results</div></div><div class="stat"><div class="stat-top">Prize pool</div><div class="number">$0</div><div class="sub">No prize data submitted</div></div></div>
+  <div class="head"><div><h2>Choose your mode</h2><p>Select a format to explore.</p></div></div><div class="modes"><button class="mode selected">1v1</button><button class="mode">2v2</button><button class="mode">3v3</button><button class="mode">4v4</button><button class="mode">FFA</button></div>
+  <div class="content-grid" style="margin-top:16px"><div class="panel"><h3>Upcoming tournaments</h3><p class="desc">Your next competitive challenge.</p><div class="empty" id="upcoming-list"><b>No tournaments yet</b><span>Published tournaments will appear here.</span></div></div><div class="panel"><h3>Recent activity</h3><p class="desc">A feed of platform events.</p><div class="empty"><b>No activity to show</b><span>Activity will appear when events are recorded.</span></div></div></div>
+</section>
+<section class="page" id="page-statistics"><div class="head"><div><h2>Statistics</h2><p>Numbers based on recorded data.</p></div></div><div class="cards"><div class="stat"><div class="stat-top">Tournaments</div><div class="number" id="stats-tournaments">0</div></div><div class="stat"><div class="stat-top">Players</div><div class="number" id="stats-players">0</div></div><div class="stat"><div class="stat-top">Results</div><div class="number" id="stats-results">0</div></div><div class="stat"><div class="stat-top">Wins recorded</div><div class="number">0</div></div></div><div class="notice">Statistics are loaded from Supabase when database access policies permit it.</div></section>
+<section class="page" id="page-tournaments"><div class="head"><div><h2>Tournaments</h2><p>Browse official events and community competitions.</p></div></div><div class="panel"><div class="empty" id="tournament-page-list"><b>No tournaments published</b><span>Available events will show up here.</span></div></div></section>
+<section class="page" id="page-leaderboard"><div class="head"><div><h2>Leaderboard</h2><p>Rankings from recorded results.</p></div></div><div class="panel"><div class="empty" id="leaderboard-list"><b>No leaderboard results yet</b><span>Player rankings will appear when results are recorded.</span></div></div></section>
+<section class="page" id="page-profile"><div class="head"><div><h2>Profile</h2><p>Player identity and competitive history.</p></div></div><div class="panel"><div class="profile-box"><div class="avatar" id="avatar">?</div><div><h2 id="profile-name">Guest player</h2><div class="muted" id="profile-status">Not signed in</div></div></div><div class="empty" id="profile-message"><b>Your profile is not connected</b><span>Sign in with Discord to connect your account.</span></div><div class="notice" id="profile-notice">Tournament administration is available to authorized administrators.</div></div></section>
+
+<section class="page" id="page-admin">
+  <div class="head"><div><h2>Admin panel</h2><p>Create tournaments and record player results.</p></div></div>
+  <div class="notice" id="admin-status">Checking administrator access…</div>
+  <div id="admin-content" hidden>
+    <div class="panel">
+      <h3 id="tournament-form-title">Create tournament</h3>
+      <p class="desc">Tournament settings, signup limits, rewards and phase configuration.</p>
+      <form id="tournament-form" class="admin-form">
+        <input type="hidden" id="edit-tournament-id">
+        <label>Tournament name<input id="t-name" required maxlength="100" placeholder="e.g. Weekly 1v1 Cup"></label>
+        <label>Mode<select id="t-mode" required><option value="1v1">1v1</option><option value="2v2">2v2</option><option value="3v3">3v3</option><option value="4v4">4v4</option><option value="FFA">FFA</option><option value="Race">Race</option><option value="Elimination">Elimination</option><option value="Ranked">Ranked</option></select></label>
+        <label>Status<select id="t-status" required><option value="upcoming">Upcoming</option><option value="live">Live</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></label>
+        <label>Start date and time<input id="t-start" type="datetime-local" required></label>
+        <label>Signup starts<input id="t-signup" type="datetime-local"></label>
+        <label>Image URL<input id="t-image" type="url" placeholder="https://.../banner.png"></label>
+        <label>Accent color<input id="t-color" type="color" value="#8b5cf6"></label>
+        <label>Party size<select id="t-party"><option>1v1</option><option>2v2</option><option>3v3</option><option>4v4</option><option>FFA</option></select></label>
+        <label>Maximum players<input id="t-maxplayers" type="number" min="2" value="16"></label>
+        <label>Entry fee<input id="t-entryfee" type="number" min="0" value="0"></label>
+        <label>Prize type<select id="t-prizetype"><option value="Gems">Gems</option><option value="Credits">Credits</option><option value="Cash">Cash</option><option value="Other">Other</option><option value="None">None</option></select></label>
+        <label>Winner prize pool<input id="t-prizepool" placeholder="e.g. 500 Gems"></label>
+        <label>Region<select id="t-region"><option>Europe (EU)</option><option>North America (NA)</option><option>South America (SA)</option><option>Asia</option><option>Middle East</option><option>Global</option></select></label>
+        <label>Tournament type<select id="t-type"><option>Generic</option><option>Single Elimination</option><option>Double Elimination</option><option>Round Robin</option><option>Swiss</option><option>Race</option><option>Elimination</option><option>Ranked</option></select></label>
+        <label>Total rounds<input id="t-rounds" type="number" min="1" value="1"></label>
+        <label>Maximum teams<input id="t-maxteams" type="number" min="2" value="16"></label>
+        <label>Number of groups<input id="t-groups" type="number" min="1" value="1"></label>
+        <label>Stream URL<input id="t-stream" type="url" placeholder="https://twitch.tv/..."></label>
+        <label>Invited Discord user IDs<input id="t-invited" placeholder="123456, 789012"></label>
+        <label>Enabled maps<input id="t-maps" placeholder="Map A, Map B, Map C"></label>
+        <label class="wide">Description<textarea id="t-description" placeholder="Tournament rules and details"></textarea></label>
+        <label class="wide">Phases (one per line: Phase name | format | maps)<textarea id="t-phases" placeholder="Phase 1 | Single Elimination | Block Dash, Laser Tracer&#10;Finals | Single Elimination | Super Slide"></textarea></label>
+        <label><span>Enable phase groups</span><input id="t-phasegroups" type="checkbox" style="width:auto;align-self:flex-start"></label>
+        <label><span>Count on leaderboard</span><input id="t-leaderboard" type="checkbox" checked style="width:auto;align-self:flex-start"></label>
+        <label><span>Invitation only</span><input id="t-invitation" type="checkbox" style="width:auto;align-self:flex-start"></label>
+        <label><span>Enable emotes</span><input id="t-emotes" type="checkbox" checked style="width:auto;align-self:flex-start"></label>
+        <div class="emote-picker" id="emote-picker">
+          <div class="emote-picker-head"><strong>Allowed emotes</strong><div class="admin-actions"><button class="secondary" type="button" id="emotes-all">Select all</button><button class="secondary" type="button" id="emotes-none">Clear</button></div></div>
+          <div class="emote-grid" id="emote-grid">
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="GG"> <span>👍 GG / Thumbs Up</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Clap"> <span>👏 Clap</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Heart"> <span>❤️ Heart</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Laugh"> <span>😂 Laugh</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Cry"> <span>😭 Cry</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Angry"> <span>😡 Angry</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Dance"> <span>🕺 Dance</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Wave"> <span>👋 Wave</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="ThumbsDown"> <span>👎 Thumbs Down</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Punch"> <span>👊 Punch</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="Kick"> <span>🦶 Kick</span></label>
+            <label class="emote-option"><input type="checkbox" name="enabled-emote" value="GGWP"> <span>🏆 GGWP</span></label>
+          </div><div class="emote-summary" id="emote-summary">0 emotes selected</div>
+        </div>
+        <div class="wide admin-actions"><button class="primary" type="submit" id="t-submit">Create tournament</button><button class="secondary" type="button" id="t-cancel" hidden>Cancel edit</button></div>
+      </form>
+      <h3>Existing tournaments</h3><div class="data-list" id="admin-tournaments"><div class="empty">Loading…</div></div>
+    </div>
+    <div class="panel" style="margin-top:15px">
+      <h3>Record tournament result</h3><p class="desc">Select a tournament and a registered player.</p>
+      <form id="result-form" class="admin-form">
+        <label>Tournament<select id="r-tournament" required></select></label>
+        <label>Player<select id="r-player" required></select></label>
+        <label>Placement<input id="r-placement" type="number" min="1" step="1" required placeholder="1"></label>
+        <label>Points<input id="r-points" type="number" min="0" step="1" required placeholder="10"></label>
+        <div class="wide"><button class="primary" type="submit">Save result</button></div>
+      </form>
+      <h3>Recent results</h3><div class="data-list" id="admin-results"><div class="empty">Loading…</div></div>
     </div>
   </div>
-</div>
+</section>
+<div class="footer">STUMBLE LABS · Community-built tournament hub · Data is shown only when recorded</div>
+</main></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* Browser-safe Supabase configuration: publishable key only. Never place a Supabase secret key here. */
+const SUPABASE_URL = 'https://qzzcqufacuwejabtkceq.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_4p6kqF7pe3kQDANdFmjSVw_HtiyVRMM';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
+
+function setPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + name));
+  document.querySelectorAll('[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === name));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-page]').forEach(b => b.addEventListener('click', () => setPage(b.dataset.page)));
+document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => setPage(b.dataset.go)));
+document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => {
+  b.parentElement.querySelectorAll('.mode').forEach(x => x.classList.toggle('selected', x === b));
+}));
+
+const signinButton = document.getElementById('signin');
+async function renderAuth(session) {
+  const user = session?.user;
+  if (!user) {
+    signinButton.textContent = 'Discord Login ↗';
+    document.getElementById('profile-name').textContent = 'Guest player';
+    document.getElementById('profile-status').textContent = 'Not signed in';
+    document.getElementById('avatar').textContent = '?';
+    document.getElementById('avatar').style.backgroundImage = '';
+    document.getElementById('profile-message').innerHTML = '<b>Your profile is not connected</b><span>Sign in with Discord to connect your account.</span>';
+    return;
+  }
+  const meta = user.user_metadata || {};
+  const username = meta.full_name || meta.name || meta.user_name || meta.preferred_username || 'Discord player';
+  signinButton.textContent = 'Sign out';
+  document.getElementById('profile-name').textContent = username;
+  document.getElementById('profile-status').textContent = 'Signed in with Discord';
+  const avatar = document.getElementById('avatar');
+  const avatarUrl = meta.avatar_url || meta.picture;
+  avatar.textContent = avatarUrl ? '' : username.slice(0,1).toUpperCase();
+  avatar.style.backgroundImage = avatarUrl ? 'url("' + avatarUrl.replace(/"/g,'') + '")' : '';
+  avatar.style.backgroundSize = 'cover';
+  avatar.style.backgroundPosition = 'center';
+  document.getElementById('profile-message').innerHTML = '<b>You are signed in</b><span>Your Discord session is active in this browser.</span>';
+  document.getElementById('profile-notice').textContent = 'Discord authentication is connected. Tournament administration and result entry still need to be built.';
+  // Profile insert is attempted only after sign-in; RLS must allow users to insert/update their own profile.
+  const { error } = await supabaseClient.from('profiles').upsert({
+    id: user.id,
+    username,
+    discord_id: meta.provider_id || user.identities?.find(i => i.provider === 'discord')?.id || null,
+    avatar_url: avatarUrl || null
+  }, { onConflict: 'id' });
+  if (error) console.warn('Could not save profile. Check the profiles RLS policies:', error.message);
+}
+signinButton.addEventListener('click', async () => {
+  signinButton.disabled = true;
+  try {
+    const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+    if (sessionError) throw sessionError;
+    if (session) {
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) throw error;
+    } else {
+      const { error } = await supabaseClient.auth.signInWithOAuth({
+        provider: 'discord',
+        options: { redirectTo: 'https://mv4g.github.io/Tournaments/' }
+      });
+      if (error) throw error;
+    }
+  } catch (error) {
+    alert('Authentication error: ' + (error?.message || 'Check the Discord provider and redirect URL settings in Supabase.'));
+  } finally {
+    signinButton.disabled = false;
+  }
+});
+supabaseClient.auth.onAuthStateChange((_event, session) => { renderAuth(session); setTimeout(() => checkAdmin(session), 0); });
+supabaseClient.auth.getSession().then(({data,error}) => {
+  if (error) console.warn('Could not read session:', error.message);
+  renderAuth(data?.session || null); checkAdmin(data?.session || null);
+});
+
+
+let currentSession = null;
+let adminAccess = false;
+let cachedTournaments = [];
+let cachedProfiles = [];
+
+async function checkAdmin(session) {
+  currentSession = session;
+  const nav = document.getElementById('admin-nav');
+  const status = document.getElementById('admin-status');
+  const content = document.getElementById('admin-content');
+  adminAccess = false;
+  nav.hidden = true;
+  content.hidden = true;
+  if (!session?.user) {
+    status.textContent = 'Sign in with your authorized Discord account to access administration.';
+    return;
+  }
+  const { data, error } = await supabaseClient.rpc('is_admin', { check_user_id: session.user.id });
+  if (error) {
+    status.textContent = 'Could not verify administrator access. Check the is_admin function and Supabase permissions.';
+    console.warn('Admin check failed:', error.message);
+    return;
+  }
+  adminAccess = data === true;
+  nav.hidden = !adminAccess;
+  content.hidden = !adminAccess;
+  status.textContent = adminAccess ? 'Administrator access verified.' : 'Your account does not have administrator permissions.';
+  if (adminAccess) await loadAdminData();
+}
+
+const emoteInputs = () => [...document.querySelectorAll('input[name="enabled-emote"]')];
+function getSelectedEmotes() { return emoteInputs().filter(input => input.checked).map(input => input.value); }
+function setSelectedEmotes(values) { const chosen = new Set(values || []); emoteInputs().forEach(input => { input.checked = chosen.has(input.value); }); }
+function updateEmoteSummary() { const chosen = getSelectedEmotes(); document.getElementById('emote-summary').textContent = `${chosen.length} emote${chosen.length === 1 ? '' : 's'} selected${document.getElementById('t-emotes').checked ? '' : ' · emotes disabled for this tournament'}`; }
+emoteInputs().forEach(input => input.addEventListener('change', updateEmoteSummary));
+document.getElementById('emotes-all').addEventListener('click', () => { emoteInputs().forEach(input => input.checked = true); updateEmoteSummary(); });
+document.getElementById('emotes-none').addEventListener('click', () => { emoteInputs().forEach(input => input.checked = false); updateEmoteSummary(); });
+document.getElementById('t-emotes').addEventListener('change', updateEmoteSummary);
+
+function resetTournamentForm() {
+  document.getElementById('tournament-form').reset();
+  setSelectedEmotes(['GG','Clap','Heart','Laugh']);
+  updateEmoteSummary();
+  document.getElementById('edit-tournament-id').value = '';
+  document.getElementById('tournament-form-title').textContent = 'Create tournament';
+  document.getElementById('t-submit').textContent = 'Create tournament';
+  document.getElementById('t-cancel').hidden = true;
+}
+document.getElementById('t-cancel').addEventListener('click', resetTournamentForm);
+
+document.getElementById('tournament-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  if (!adminAccess || !currentSession?.user) return alert('Administrator access required.');
+  const button = document.getElementById('t-submit');
+  button.disabled = true;
+  const editId = document.getElementById('edit-tournament-id').value;
+  const payload = {
+    name: document.getElementById('t-name').value.trim(),
+    mode: document.getElementById('t-mode').value,
+    status: document.getElementById('t-status').value,
+    starts_at: new Date(document.getElementById('t-start').value).toISOString(),
+    signup_starts_at: document.getElementById('t-signup').value ? new Date(document.getElementById('t-signup').value).toISOString() : null,
+    image_url: document.getElementById('t-image').value.trim() || null,
+    color: document.getElementById('t-color').value,
+    party_size: document.getElementById('t-party').value,
+    max_players: Number(document.getElementById('t-maxplayers').value || 16),
+    entry_fee: Number(document.getElementById('t-entryfee').value || 0),
+    prize_type: document.getElementById('t-prizetype').value,
+    prizepool: document.getElementById('t-prizepool').value.trim() || null,
+    region: document.getElementById('t-region').value,
+    tournament_type: document.getElementById('t-type').value,
+    total_rounds: Number(document.getElementById('t-rounds').value || 1),
+    max_teams: Number(document.getElementById('t-maxteams').value || 16),
+    number_groups: Number(document.getElementById('t-groups').value || 1),
+    stream_url: document.getElementById('t-stream').value.trim() || null,
+    invited_user_ids: document.getElementById('t-invited').value.split(',').map(x=>x.trim()).filter(Boolean),
+    maps: document.getElementById('t-maps').value.split(',').map(x=>x.trim()).filter(Boolean),
+    description: document.getElementById('t-description').value.trim() || null,
+    phase_config: document.getElementById('t-phases').value.split('\n').map(line=>line.trim()).filter(Boolean).map((line,index)=>{const [name,format,maps='']=line.split('|').map(x=>x.trim());return {order:index+1,name:name||`Phase ${index+1}`,format:format||'Single Elimination',maps:maps.split(',').map(x=>x.trim()).filter(Boolean)}}),
+    enable_phase_groups: document.getElementById('t-phasegroups').checked,
+    count_on_leaderboard: document.getElementById('t-leaderboard').checked,
+    invitation_only: document.getElementById('t-invitation').checked,
+    enable_emotes: document.getElementById('t-emotes').checked,
+    enabled_emotes: getSelectedEmotes()
+  };
+  try {
+    const request = editId
+      ? supabaseClient.from('tournaments').update(payload).eq('id', editId)
+      : supabaseClient.from('tournaments').insert(payload);
+    const { error } = await request;
+    if (error) throw error;
+    resetTournamentForm();
+    await loadAdminData();
+    await loadPublicData();
+    alert(editId ? 'Tournament updated.' : 'Tournament created.');
+  } catch (error) {
+    alert('Could not save tournament: ' + (error?.message || 'Unknown error'));
+  } finally { button.disabled = false; }
+});
+
+document.getElementById('result-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  if (!adminAccess || !currentSession?.user) return alert('Administrator access required.');
+  const payload = {
+    tournament_id: document.getElementById('r-tournament').value,
+    player_id: document.getElementById('r-player').value,
+    placement: Number(document.getElementById('r-placement').value),
+    points: Number(document.getElementById('r-points').value)
+  };
+  try {
+    const { error } = await supabaseClient.from('tournament_results').insert(payload);
+    if (error) throw error;
+    document.getElementById('result-form').reset();
+    await loadAdminData();
+    await loadPublicData();
+    alert('Result saved.');
+  } catch (error) {
+    alert('Could not save result: ' + (error?.message || 'Unknown error'));
+  }
+});
+
+async function loadAdminData() {
+  if (!adminAccess) return;
+  const [tRes, pRes, rRes] = await Promise.all([
+    supabaseClient.from('tournaments').select('id,name,mode,status,starts_at,signup_starts_at,image_url,color,party_size,max_players,entry_fee,prize_type,prizepool,region,tournament_type,total_rounds,max_teams,number_groups,stream_url,invited_user_ids,maps,description,phase_config,enable_phase_groups,count_on_leaderboard,invitation_only,enable_emotes,enabled_emotes').order('starts_at',{ascending:true}),
+    supabaseClient.from('profiles').select('id,username,discord_id'),
+    supabaseClient.from('tournament_results').select('id,tournament_id,player_id,placement,points').order('created_at',{ascending:false}).limit(30)
+  ]);
+  const tBox = document.getElementById('admin-tournaments');
+  const rTournament = document.getElementById('r-tournament');
+  const rPlayer = document.getElementById('r-player');
+  if (tRes.error) {
+    tBox.innerHTML = '<div class="empty"><b>Could not load tournaments</b><span>'+escapeHtml(tRes.error.message)+'</span></div>';
+  } else {
+    cachedTournaments = tRes.data || [];
+    tBox.innerHTML = cachedTournaments.length ? cachedTournaments.map(t => `
+      <div class="data-item"><div><b>${escapeHtml(t.name)}</b><small>${escapeHtml(t.mode)} · ${escapeHtml(t.status)} · ${t.starts_at ? escapeHtml(new Date(t.starts_at).toLocaleString()) : 'No date'}</small></div>
+      <div class="admin-actions"><button class="secondary" data-edit-t="${escapeHtml(t.id)}">Edit</button><button class="secondary" data-delete-t="${escapeHtml(t.id)}">Delete</button></div></div>`).join('') : '<div class="empty"><b>No tournaments yet</b><span>Create one using the form above.</span></div>';
+    rTournament.innerHTML = '<option value="">Choose tournament</option>' + cachedTournaments.map(t => `<option value="${escapeHtml(t.id)}">${escapeHtml(t.name)}</option>`).join('');
+  }
+  if (pRes.error) {
+    rPlayer.innerHTML = '<option value="">Could not load players</option>';
+    console.warn('Could not load profiles:', pRes.error.message);
+  } else {
+    cachedProfiles = pRes.data || [];
+    rPlayer.innerHTML = '<option value="">Choose player</option>' + cachedProfiles.map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.username || p.discord_id || p.id)}</option>`).join('');
+  }
+  tBox.querySelectorAll('[data-edit-t]').forEach(button => button.addEventListener('click', () => {
+    const t = cachedTournaments.find(item => item.id === button.dataset.editT);
+    if (!t) return;
+    document.getElementById('edit-tournament-id').value = t.id;
+    document.getElementById('t-name').value = t.name || '';
+    document.getElementById('t-mode').value = t.mode || '1v1';
+    document.getElementById('t-status').value = t.status || 'upcoming';
+    document.getElementById('t-start').value = t.starts_at ? new Date(new Date(t.starts_at).getTime()-new Date(t.starts_at).getTimezoneOffset()*60000).toISOString().slice(0,16) : '';
+    const localDate = v => v ? new Date(new Date(v).getTime()-new Date(v).getTimezoneOffset()*60000).toISOString().slice(0,16) : '';
+    document.getElementById('t-signup').value = localDate(t.signup_starts_at);
+    document.getElementById('t-image').value = t.image_url || '';
+    document.getElementById('t-color').value = t.color || '#8b5cf6';
+    document.getElementById('t-party').value = t.party_size || t.mode || '1v1';
+    document.getElementById('t-maxplayers').value = t.max_players ?? 16;
+    document.getElementById('t-entryfee').value = t.entry_fee ?? 0;
+    document.getElementById('t-prizetype').value = t.prize_type || 'Gems';
+    document.getElementById('t-prizepool').value = t.prizepool || '';
+    document.getElementById('t-region').value = t.region || 'Europe (EU)';
+    document.getElementById('t-type').value = t.tournament_type || 'Generic';
+    document.getElementById('t-rounds').value = t.total_rounds ?? 1;
+    document.getElementById('t-maxteams').value = t.max_teams ?? 16;
+    document.getElementById('t-groups').value = t.number_groups ?? 1;
+    document.getElementById('t-stream').value = t.stream_url || '';
+    document.getElementById('t-invited').value = (t.invited_user_ids || []).join(', ');
+    document.getElementById('t-maps').value = (t.maps || []).join(', ');
+    document.getElementById('t-description').value = t.description || '';
+    document.getElementById('t-phases').value = (t.phase_config || []).map(ph => `${ph.name || ''} | ${ph.format || ''} | ${(ph.maps || []).join(', ')}`).join('\n');
+    document.getElementById('t-phasegroups').checked = !!t.enable_phase_groups;
+    document.getElementById('t-leaderboard').checked = t.count_on_leaderboard !== false;
+    document.getElementById('t-invitation').checked = !!t.invitation_only;
+    document.getElementById('t-emotes').checked = t.enable_emotes !== false;
+    setSelectedEmotes(Array.isArray(t.enabled_emotes) ? t.enabled_emotes : ['GG','Clap','Heart','Laugh']);
+    updateEmoteSummary();
+    document.getElementById('tournament-form-title').textContent = 'Edit tournament';
+    document.getElementById('t-submit').textContent = 'Save changes';
+    document.getElementById('t-cancel').hidden = false;
+    document.getElementById('tournament-form-title').scrollIntoView({behavior:'smooth',block:'center'});
+  }));
+  tBox.querySelectorAll('[data-delete-t]').forEach(button => button.addEventListener('click', async () => {
+    const t = cachedTournaments.find(item => item.id === button.dataset.deleteT);
+    if (!t || !confirm(`Delete "${t.name}"? This cannot be undone.`)) return;
+    const { error } = await supabaseClient.from('tournaments').delete().eq('id',t.id);
+    if (error) alert('Could not delete tournament: '+error.message);
+    else { resetTournamentForm(); await loadAdminData(); await loadPublicData(); }
+  }));
+  const rBox = document.getElementById('admin-results');
+  if (rRes.error) {
+    rBox.innerHTML = '<div class="empty"><b>Could not load results</b><span>'+escapeHtml(rRes.error.message)+'</span></div>';
+  } else {
+    const tournamentsById = Object.fromEntries(cachedTournaments.map(t => [t.id,t.name]));
+    const profilesById = Object.fromEntries(cachedProfiles.map(p => [p.id,p.username || p.discord_id || p.id]));
+    rBox.innerHTML = rRes.data?.length ? rRes.data.map(r => `<div class="data-item"><div><b>${escapeHtml(profilesById[r.player_id] || 'Unknown player')}</b><small>${escapeHtml(tournamentsById[r.tournament_id] || 'Unknown tournament')} · Place ${r.placement} · ${r.points} points</small></div><button class="secondary" data-delete-r="${escapeHtml(r.id)}">Delete</button></div>`).join('') : '<div class="empty"><b>No results yet</b><span>Saved results will appear here.</span></div>';
+    rBox.querySelectorAll('[data-delete-r]').forEach(button => button.addEventListener('click', async () => {
+      if (!confirm('Delete this result?')) return;
+      const { error } = await supabaseClient.from('tournament_results').delete().eq('id',button.dataset.deleteR);
+      if (error) alert('Could not delete result: '+error.message);
+      else { await loadAdminData(); await loadPublicData(); }
+    }));
+  }
+}
+
+async function loadPublicData() {
+  const [tournaments, profiles, results] = await Promise.all([
+    supabaseClient.from('tournaments').select('id,name,mode,status,starts_at,signup_starts_at,image_url,color,party_size,max_players,entry_fee,prize_type,prizepool,region,tournament_type,total_rounds,max_teams,number_groups,stream_url,invited_user_ids,maps,description,phase_config,enable_phase_groups,count_on_leaderboard,invitation_only,enable_emotes,enabled_emotes').order('starts_at',{ascending:true}),
+    supabaseClient.from('profiles').select('id'),
+    supabaseClient.from('tournament_results').select('id')
+  ]);
+  if (!tournaments.error) {
+    const list = tournaments.data || [];
+    document.getElementById('tournament-count').textContent = list.length;
+    document.getElementById('stats-tournaments').textContent = list.length;
+    const upcoming = list.filter(t => t.status === 'upcoming' || t.status === 'live');
+    const card = t => `<article class="tournament-card" style="--event-color:${safeColor(t.color)}">${t.image_url ? `<img class="event-image" src="${escapeHtml(t.image_url)}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}<div class="event-body"><div class="event-meta"><span>${escapeHtml(t.region || 'Global')}</span><span>${escapeHtml(t.status || 'upcoming')}</span></div><h3>${escapeHtml(t.name)}</h3><p>${escapeHtml(t.description || t.tournament_type || t.mode || 'Community tournament')}</p><div class="event-facts"><span>${escapeHtml(t.party_size || t.mode || '1v1')}</span><span>${t.max_players ? `Up to ${Number(t.max_players)} players` : 'Open slots'}</span><span>${t.starts_at ? escapeHtml(new Date(t.starts_at).toLocaleString()) : 'Date TBA'}</span></div>${t.prizepool ? `<div class="event-prize">Prize: ${escapeHtml(t.prizepool)}</div>` : ''}</div></article>`;
+    const markup = upcoming.length ? upcoming.map(card).join('') : '<b>No tournaments yet</b><span>Published tournaments will appear here.</span>';
+    document.getElementById('upcoming-list').className = upcoming.length ? 'tournament-grid' : 'empty';
+    document.getElementById('upcoming-list').innerHTML = markup;
+    document.getElementById('tournament-page-list').className = list.length ? 'tournament-grid' : 'empty';
+    document.getElementById('tournament-page-list').innerHTML = list.length ? list.map(card).join('') : '<b>No tournaments published</b><span>Available events will show up here.</span>';
+  } else console.warn('Tournament data unavailable:', tournaments.error.message);
+  if (!profiles.error) {
+    document.getElementById('player-count').textContent = profiles.data.length;
+    document.getElementById('stats-players').textContent = profiles.data.length;
+  } else console.warn('Profiles unavailable:', profiles.error.message);
+  if (!results.error) {
+    document.getElementById('match-count').textContent = results.data.length;
+    document.getElementById('stats-results').textContent = results.data.length;
+  } else console.warn('Results unavailable:', results.error.message);
+}
+function safeColor(value) { return /^#[0-9a-f]{6}$/i.test(String(value || '')) ? value : '#8b5cf6'; }
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+loadPublicData();
+</script>
+</body>
+</html>
