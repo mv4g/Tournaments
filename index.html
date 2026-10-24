@@ -1,29 +1,150 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090b12">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b12">
 <title>Stumble Labs | Tournament Hub</title>
 <style>
-:root{--bg:#090b12;--panel:#111521;--panel2:#171c2a;--line:#252c3d;--text:#f4f6ff;--muted:#8e97ad;--purple:#8b5cf6;--cyan:#50e3d1;--orange:#ff9d5c}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% -10%,#29204d 0,transparent 42%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}button,select,input{font:inherit}button{cursor:pointer}.app{max-width:1440px;margin:auto;min-height:100vh}.top{display:flex;align-items:center;gap:26px;padding:20px clamp(16px,4vw,48px);border-bottom:1px solid #252a3a;position:sticky;top:0;background:#090b12eF;backdrop-filter:blur(18px);z-index:5}.brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:18px;white-space:nowrap;letter-spacing:-.5px}.logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(140deg,#b99aff,#6d42d9);display:grid;place-items:center;box-shadow:0 6px 22px #8b5cf640;color:white;font-weight:900}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;text-transform:uppercase}.nav{display:flex;gap:5px;align-items:center;flex:1}.nav button{border:0;background:transparent;color:var(--muted);padding:10px 13px;border-radius:10px;font-weight:650;white-space:nowrap}.nav button.active,.nav button:hover{color:white;background:#ffffff0d}.nav button.active{box-shadow:inset 0 -2px var(--purple)}.tools{display:flex;align-items:center;gap:10px}.lang{max-width:145px;background:var(--panel);color:#dce1f2;border:1px solid var(--line);border-radius:10px;padding:9px}.sign{border:1px solid #3b3158;background:#211837;color:#dcd0ff;padding:10px 14px;border-radius:11px;font-weight:750;white-space:nowrap}.main{padding:34px clamp(16px,4vw,48px) 60px}.eyebrow{color:var(--cyan);font-weight:800;text-transform:uppercase;letter-spacing:2px;font-size:11px}.hero{position:relative;overflow:hidden;border:1px solid #383052;border-radius:24px;padding:clamp(24px,5vw,52px);background:linear-gradient(115deg,#21183c 0%,#15182b 48%,#10252c 100%);min-height:250px;display:flex;align-items:center;justify-content:space-between;gap:20px}.hero:after{content:"";position:absolute;width:310px;height:310px;border-radius:50%;right:5%;top:-110px;border:1px solid #9e83ff44;box-shadow:0 0 0 30px #9e83ff0a,0 0 0 70px #9e83ff08}.hero-copy{position:relative;z-index:1;max-width:650px}.hero h1{font-size:clamp(32px,5vw,54px);line-height:1.04;letter-spacing:-2px;margin:13px 0}.hero p{color:#b5bad0;max-width:550px;margin:0 0 23px}.primary{border:0;background:linear-gradient(100deg,#9a70ff,#7350df);color:white;padding:12px 17px;border-radius:11px;font-weight:800;box-shadow:0 8px 26px #8455ef35}.hero-tag{display:inline-flex;align-items:center;gap:7px;border:1px solid #ffffff25;border-radius:100px;padding:6px 10px;color:#d9d0ff;font-size:12px;font-weight:700}.pulse{width:7px;height:7px;background:var(--cyan);border-radius:50%}.hero-mark{font-size:clamp(70px,13vw,140px);font-weight:950;letter-spacing:-12px;color:#ffffff0c;text-shadow:0 0 45px #a58bff24;margin-right:5%;z-index:1}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:34px 0 16px}.section-head h2{font-size:20px;margin:0;letter-spacing:-.5px}.section-head p{margin:4px 0 0;color:var(--muted);font-size:13px}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat,.panel{background:linear-gradient(145deg,#141927,#10131d);border:1px solid var(--line);border-radius:16px}.stat{padding:19px}.stat-top{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px;font-weight:700}.stat-icon{width:31px;height:31px;border-radius:9px;background:#8b5cf61b;color:#bda7ff;display:grid;place-items:center;font-size:16px}.number{font-size:30px;font-weight:850;letter-spacing:-1px;margin:13px 0 1px}.sub{color:#727c92;font-size:12px}.content-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:15px}.panel{padding:21px;min-height:190px}.panel h3{margin:0;font-size:16px}.panel .desc{color:var(--muted);font-size:13px;margin:5px 0 20px}.empty{min-height:115px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:var(--muted);gap:7px;border:1px dashed #30374a;border-radius:12px;padding:18px}.empty b{color:#dfe3f2;font-size:13px}.empty span{font-size:12px}.modes{display:flex;gap:9px;flex-wrap:wrap}.mode{border:1px solid var(--line);background:#131826;color:#aab2c8;border-radius:10px;padding:10px 15px;font-weight:750}.mode.selected{color:#eee7ff;border-color:#8b5cf6;background:#8b5cf61c}.page{display:none}.page.active{display:block}.table-empty{margin-top:15px}.footer{color:#687187;font-size:12px;text-align:center;padding:24px 10px 6px}.notice{border:1px solid #53432a;background:#2a2115;color:#e7cda3;padding:13px 15px;border-radius:12px;margin-top:17px;font-size:12px}.profile-box{display:flex;align-items:center;gap:16px;margin-bottom:20px}.avatar{width:56px;height:56px;border-radius:17px;background:linear-gradient(135deg,#9c7cff,#41306e);display:grid;place-items:center;font-size:24px;font-weight:900}.profile-box h2{margin:0}.muted{color:var(--muted)}@media(max-width:900px){.top{flex-wrap:wrap;gap:13px}.nav{order:3;flex-basis:100%;overflow-x:auto}.tools{margin-left:auto}.hero-mark{display:none}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.content-grid{grid-template-columns:1fr}}@media(max-width:520px){.top{padding:13px 14px}.brand{font-size:16px}.tools{gap:6px}.lang{max-width:112px;font-size:12px}.sign{padding:9px 10px;font-size:12px}.nav button{padding:10px 11px;font-size:13px}.main{padding:20px 14px 40px}.hero{border-radius:18px;padding:25px 20px;min-height:245px}.hero h1{letter-spacing:-1.4px}.cards{gap:9px}.stat{padding:14px}.number{font-size:26px}.panel{padding:16px}}
-</style></head>
+:root{--bg:#090b12;--panel:#111521;--line:#252c3d;--text:#f4f6ff;--muted:#8e97ad;--purple:#8b5cf6;--cyan:#50e3d1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% -10%,#29204d 0,transparent 42%),var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,select{font:inherit;cursor:pointer}.app{max-width:1440px;margin:auto;min-height:100vh}.top{display:flex;align-items:center;gap:24px;padding:20px clamp(16px,4vw,48px);border-bottom:1px solid #252a3a;position:sticky;top:0;background:#090b12ef;backdrop-filter:blur(18px);z-index:5}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:18px;white-space:nowrap}.logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(140deg,#b99aff,#6d42d9);display:grid;place-items:center;font-weight:900}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px}
+.nav{display:flex;gap:5px;align-items:center;flex:1;overflow-x:auto}.nav button{border:0;background:transparent;color:var(--muted);padding:10px 13px;border-radius:10px;font-weight:650;white-space:nowrap}.nav button.active,.nav button:hover{color:white;background:#ffffff0d}.tools{display:flex;align-items:center;gap:10px}.sign{border:1px solid #3b3158;background:#211837;color:#dcd0ff;padding:10px 14px;border-radius:11px;font-weight:750;white-space:nowrap}.main{padding:34px clamp(16px,4vw,48px) 60px}.hero{position:relative;overflow:hidden;border:1px solid #383052;border-radius:24px;padding:clamp(24px,5vw,52px);background:linear-gradient(115deg,#21183c,#15182b 48%,#10252c);min-height:250px;display:flex;align-items:center;justify-content:space-between;gap:20px}.hero-copy{max-width:650px;z-index:1}.tag{display:inline-flex;align-items:center;gap:7px;border:1px solid #ffffff25;border-radius:100px;padding:6px 10px;color:#d9d0ff;font-size:12px;font-weight:700}.pulse{width:7px;height:7px;background:var(--cyan);border-radius:50%}.hero h1{font-size:clamp(32px,5vw,54px);line-height:1.04;letter-spacing:-2px;margin:13px 0}.hero p{color:#b5bad0;max-width:550px;margin:0 0 23px}.primary{border:0;background:linear-gradient(100deg,#9a70ff,#7350df);color:white;padding:12px 17px;border-radius:11px;font-weight:800}.hero-mark{font-size:clamp(70px,13vw,140px);font-weight:950;color:#ffffff0c;letter-spacing:-12px;margin-right:5%}
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:34px 0 16px}.head h2{font-size:20px;margin:0}.head p{margin:4px 0 0;color:var(--muted);font-size:13px}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat,.panel{background:linear-gradient(145deg,#141927,#10131d);border:1px solid var(--line);border-radius:16px}.stat{padding:19px}.stat-top{color:var(--muted);font-size:12px;font-weight:700}.number{font-size:30px;font-weight:850;margin:13px 0 1px}.sub,.muted{color:var(--muted);font-size:12px}.content-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:15px}.panel{padding:21px;min-height:190px}.panel h3{margin:0;font-size:16px}.desc{color:var(--muted);font-size:13px;margin:5px 0 20px}.empty{min-height:115px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:var(--muted);gap:7px;border:1px dashed #30374a;border-radius:12px;padding:18px}.empty b{color:#dfe3f2;font-size:13px}.empty span{font-size:12px}.modes{display:flex;gap:9px;flex-wrap:wrap}.mode{border:1px solid var(--line);background:#131826;color:#aab2c8;border-radius:10px;padding:10px 15px;font-weight:750}.mode.selected{color:#eee7ff;border-color:var(--purple);background:#8b5cf61c}.page{display:none}.page.active{display:block}.notice{border:1px solid #53432a;background:#2a2115;color:#e7cda3;padding:13px 15px;border-radius:12px;margin-top:17px;font-size:12px}.profile-box{display:flex;align-items:center;gap:16px;margin-bottom:20px}.avatar{width:56px;height:56px;border-radius:17px;background:linear-gradient(135deg,#9c7cff,#41306e);display:grid;place-items:center;font-size:24px;font-weight:900}.footer{color:#687187;font-size:12px;text-align:center;padding:24px 10px 6px}
+@media(max-width:900px){.top{flex-wrap:wrap;gap:13px}.nav{order:3;flex-basis:100%}.tools{margin-left:auto}.hero-mark{display:none}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.content-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.top{padding:13px 14px}.brand{font-size:16px}.sign{padding:9px 10px;font-size:12px}.nav button{padding:10px 11px;font-size:13px}.main{padding:20px 14px 40px}.hero{border-radius:18px;padding:25px 20px}.hero h1{letter-spacing:-1.4px}.cards{gap:9px}.stat{padding:14px}.number{font-size:26px}.panel{padding:16px}}
+</style>
+</head>
 <body><div class="app">
-<header class="top"><div class="brand"><div class="logo">SL</div><div>STUMBLE LABS<small>COMPETITIVE HUB</small></div></div>
-<nav class="nav" aria-label="Main navigation"><button class="active" data-page="dashboard">Dashboard</button><button data-page="statistics">Statistics</button><button data-page="tournaments">Tournaments</button><button data-page="leaderboard">Leaderboard</button><button data-page="profile">Profile</button></nav>
-<div class="tools"><select class="lang" id="language" aria-label="Language"><option value="en">English</option></select><button class="sign" id="signin">Discord Login ↗</button></div></header>
+<header class="top">
+  <div class="brand"><div class="logo">SL</div><div>STUMBLE LABS<small>COMPETITIVE HUB</small></div></div>
+  <nav class="nav" aria-label="Main navigation"><button class="active" data-page="dashboard">Dashboard</button><button data-page="statistics">Statistics</button><button data-page="tournaments">Tournaments</button><button data-page="leaderboard">Leaderboard</button><button data-page="profile">Profile</button></nav>
+  <div class="tools"><button class="sign" id="signin">Discord Login ↗</button></div>
+</header>
 <main class="main">
-<section class="page active" id="page-dashboard"><div class="hero"><div class="hero-copy"><div class="hero-tag"><i class="pulse"></i> COMMUNITY TOURNAMENT PLATFORM</div><h1>Play sharp.<br>Climb higher.</h1><p>Your home for competitive Stumble Guys. Explore tournaments, track results, and find your next match.</p><button class="primary" data-go="tournaments">Explore tournaments ↗</button></div><div class="hero-mark">SL</div></div>
-<div class="section-head"><div><h2>Platform overview</h2><p>Verified data only. Nothing has been reported yet.</p></div><span class="muted" style="font-size:12px">LIVE DATA · NOT CONNECTED</span></div>
-<div class="cards"><div class="stat"><div class="stat-top">Total tournaments <span class="stat-icon">◈</span></div><div class="number">0</div><div class="sub">No tournament records</div></div><div class="stat"><div class="stat-top">Registered players <span class="stat-icon">♙</span></div><div class="number">0</div><div class="sub">No player records</div></div><div class="stat"><div class="stat-top">Matches played <span class="stat-icon">⚔</span></div><div class="number">0</div><div class="sub">No match records</div></div><div class="stat"><div class="stat-top">Prize pool <span class="stat-icon">◇</span></div><div class="number">$0</div><div class="sub">No prize data submitted</div></div></div>
-<div class="section-head"><div><h2>Choose your mode</h2><p>Select a format to explore the competitive scene.</p></div></div><div class="modes" id="modes"><button class="mode selected">1v1</button><button class="mode">2v2</button><button class="mode">3v3</button><button class="mode">4v4</button><button class="mode">FFA</button></div>
-<div class="content-grid" style="margin-top:16px"><div class="panel"><h3>Upcoming tournaments</h3><p class="desc">Your next competitive challenge.</p><div class="empty"><b>No tournaments yet</b><span>Published tournaments will appear here.</span></div></div><div class="panel"><h3>Recent activity</h3><p class="desc">A transparent feed of platform events.</p><div class="empty"><b>No activity to show</b><span>Activity will appear when real events are recorded.</span></div></div></div></section>
-<section class="page" id="page-statistics"><div class="section-head"><div><div class="eyebrow">ANALYTICS</div><h2>Statistics</h2><p>Platform-wide numbers based on recorded data.</p></div></div><div class="cards"><div class="stat"><div class="stat-top">Tournaments <span class="stat-icon">◈</span></div><div class="number">0</div><div class="sub">Recorded total</div></div><div class="stat"><div class="stat-top">Players <span class="stat-icon">♙</span></div><div class="number">0</div><div class="sub">Recorded total</div></div><div class="stat"><div class="stat-top">Matches <span class="stat-icon">⚔</span></div><div class="number">0</div><div class="sub">Recorded total</div></div><div class="stat"><div class="stat-top">Wins recorded <span class="stat-icon">✦</span></div><div class="number">0</div><div class="sub">Recorded total</div></div></div><div class="notice">Live statistics are not connected yet. These values are intentionally set to zero rather than displaying invented data.</div></section>
-<section class="page" id="page-tournaments"><div class="section-head"><div><div class="eyebrow">COMPETE</div><h2>Tournaments</h2><p>Browse official events and community competitions.</p></div><span class="hero-tag">5 GAME MODES</span></div><div class="modes mode-filter"><button class="mode selected">All modes</button><button class="mode">1v1</button><button class="mode">2v2</button><button class="mode">3v3</button><button class="mode">4v4</button><button class="mode">FFA</button></div><div class="panel table-empty"><div class="empty"><b>No tournaments published</b><span>When tournament data is connected, available events will show up here.</span></div></div><div class="notice">Creating and publishing tournaments requires a connected backend. This static page does not save events to a shared database.</div></section>
-<section class="page" id="page-leaderboard"><div class="section-head"><div><div class="eyebrow">RANKINGS</div><h2>Leaderboard</h2><p>Rankings will be calculated from verified match results.</p></div></div><div class="panel"><div class="empty"><b>The leaderboard is waiting for its first result</b><span>No players or scores have been added.</span></div></div></section>
-<section class="page" id="page-profile"><div class="section-head"><div><div class="eyebrow">YOUR ACCOUNT</div><h2>Profile</h2><p>Player identity and competitive history.</p></div></div><div class="panel"><div class="profile-box"><div class="avatar">?</div><div><h2>Guest player</h2><div class="muted">Not signed in</div></div></div><div class="empty"><b>Your profile is not connected</b><span>Discord OAuth needs secure server-side configuration before sign-in can work.</span></div><div class="notice">The Discord Login button is a placeholder. This HTML file does not authenticate users or enforce an account-ID allowlist.</div></div></section>
+<section class="page active" id="page-dashboard">
+  <div class="hero"><div class="hero-copy"><div class="tag"><i class="pulse"></i> COMMUNITY TOURNAMENT PLATFORM</div><h1>Play sharp.<br>Climb higher.</h1><p>Your home for competitive Stumble Guys. Explore tournaments, track results, and find your next match.</p><button class="primary" data-go="tournaments">Explore tournaments ↗</button></div><div class="hero-mark">SL</div></div>
+  <div class="head"><div><h2>Platform overview</h2><p>Statistics will appear when records are added.</p></div><span class="muted">SUPABASE CONNECTED</span></div>
+  <div class="cards"><div class="stat"><div class="stat-top">Total tournaments</div><div class="number" id="tournament-count">0</div><div class="sub">Recorded tournaments</div></div><div class="stat"><div class="stat-top">Registered players</div><div class="number" id="player-count">0</div><div class="sub">Registered profiles</div></div><div class="stat"><div class="stat-top">Matches played</div><div class="number" id="match-count">0</div><div class="sub">Recorded results</div></div><div class="stat"><div class="stat-top">Prize pool</div><div class="number">$0</div><div class="sub">No prize data submitted</div></div></div>
+  <div class="head"><div><h2>Choose your mode</h2><p>Select a format to explore.</p></div></div><div class="modes"><button class="mode selected">1v1</button><button class="mode">2v2</button><button class="mode">3v3</button><button class="mode">4v4</button><button class="mode">FFA</button></div>
+  <div class="content-grid" style="margin-top:16px"><div class="panel"><h3>Upcoming tournaments</h3><p class="desc">Your next competitive challenge.</p><div class="empty" id="upcoming-list"><b>No tournaments yet</b><span>Published tournaments will appear here.</span></div></div><div class="panel"><h3>Recent activity</h3><p class="desc">A feed of platform events.</p><div class="empty"><b>No activity to show</b><span>Activity will appear when events are recorded.</span></div></div></div>
+</section>
+<section class="page" id="page-statistics"><div class="head"><div><h2>Statistics</h2><p>Numbers based on recorded data.</p></div></div><div class="cards"><div class="stat"><div class="stat-top">Tournaments</div><div class="number" id="stats-tournaments">0</div></div><div class="stat"><div class="stat-top">Players</div><div class="number" id="stats-players">0</div></div><div class="stat"><div class="stat-top">Results</div><div class="number" id="stats-results">0</div></div><div class="stat"><div class="stat-top">Wins recorded</div><div class="number">0</div></div></div><div class="notice">Statistics are loaded from Supabase when database access policies permit it.</div></section>
+<section class="page" id="page-tournaments"><div class="head"><div><h2>Tournaments</h2><p>Browse official events and community competitions.</p></div></div><div class="panel"><div class="empty" id="tournament-page-list"><b>No tournaments published</b><span>Available events will show up here.</span></div></div></section>
+<section class="page" id="page-leaderboard"><div class="head"><div><h2>Leaderboard</h2><p>Rankings from recorded results.</p></div></div><div class="panel"><div class="empty" id="leaderboard-list"><b>No leaderboard results yet</b><span>Player rankings will appear when results are recorded.</span></div></div></section>
+<section class="page" id="page-profile"><div class="head"><div><h2>Profile</h2><p>Player identity and competitive history.</p></div></div><div class="panel"><div class="profile-box"><div class="avatar" id="avatar">?</div><div><h2 id="profile-name">Guest player</h2><div class="muted" id="profile-status">Not signed in</div></div></div><div class="empty" id="profile-message"><b>Your profile is not connected</b><span>Sign in with Discord to connect your account.</span></div><div class="notice" id="profile-notice">Tournament administration and result entry are not enabled on this page yet.</div></div></section>
 <div class="footer">STUMBLE LABS · Community-built tournament hub · Data is shown only when recorded</div>
 </main></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const languages=[['en','English'],['tr','Türkçe'],['es','Español'],['fr','Français'],['de','Deutsch'],['it','Italiano'],['pt','Português'],['pt-BR','Português (Brasil)'],['nl','Nederlands'],['pl','Polski'],['ru','Русский'],['uk','Українська'],['ar','العربية'],['hi','हिन्दी'],['bn','বাংলা'],['id','Bahasa Indonesia'],['ms','Bahasa Melayu'],['th','ไทย'],['vi','Tiếng Việt'],['ja','日本語'],['ko','한국어'],['zh-CN','简体中文'],['zh-TW','繁體中文'],['sv','Svenska'],['no','Norsk'],['da','Dansk'],['fi','Suomi'],['el','Ελληνικά'],['cs','Čeština'],['ro','Română']];const language=document.getElementById('language');languages.forEach(([code,name])=>{if(code==='en')return;const opt=document.createElement('option');opt.value=code;opt.textContent=name;language.appendChild(opt)});
-const translations={tr:{'Dashboard':'Kontrol Paneli','Statistics':'İstatistikler','Tournaments':'Turnuvalar','Leaderboard':'Sıralama','Profile':'Profil','Discord Login ↗':'Discord ile giriş ↗','Platform overview':'Platform özeti','Upcoming tournaments':'Yaklaşan turnuvalar','Recent activity':'Son etkinlikler','Choose your mode':'Modunu seç','Explore tournaments ↗':'Turnuvaları keşfet ↗'},es:{'Dashboard':'Panel','Statistics':'Estadísticas','Tournaments':'Torneos','Leaderboard':'Clasificación','Profile':'Perfil'},fr:{'Dashboard':'Tableau de bord','Statistics':'Statistiques','Tournaments':'Tournois','Leaderboard':'Classement','Profile':'Profil'},de:{'Dashboard':'Dashboard','Statistics':'Statistiken','Tournaments':'Turniere','Leaderboard':'Bestenliste','Profile':'Profil'},it:{'Dashboard':'Pannello','Statistics':'Statistiche','Tournaments':'Tornei','Leaderboard':'Classifica','Profile':'Profil'},pt:{'Dashboard':'Painel','Statistics':'Estatísticas','Tournaments':'Torneios','Leaderboard':'Classificação','Profile':'Perfil'},'pt-BR':{'Dashboard':'Painel','Statistics':'Estatísticas','Tournaments':'Torneios','Leaderboard':'Ranking','Profile':'Perfil'},ru:{'Dashboard':'Панель','Statistics':'Статистика','Tournaments':'Турниры','Leaderboard':'Рейтинг','Profile':'Профиль'},ja:{'Dashboard':'ダッシュボード','Statistics':'統計','Tournaments':'大会','Leaderboard':'ランキング','Profile':'プロフィール'},ko:{'Dashboard':'대시보드','Statistics':'통계','Tournaments':'토너먼트','Leaderboard':'순위표','Profile':'프로필'},'zh-CN':{'Dashboard':'仪表板','Statistics':'统计','Tournaments':'锦标赛','Leaderboard':'排行榜','Profile':'个人资料'},'zh-TW':{'Dashboard':'儀表板','Statistics':'統計','Tournaments':'錦標賽','Leaderboard':'排行榜','Profile':'個人資料'}};
-const original=new Map();document.querySelectorAll('.nav button').forEach(b=>original.set(b,b.textContent));function setPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+name));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===name));window.scrollTo({top:0,behavior:'smooth'})}document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>setPage(b.dataset.page)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>setPage(b.dataset.go)));document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>{const group=b.parentElement;group.querySelectorAll('.mode').forEach(x=>x.classList.toggle('selected',x===b))}));language.addEventListener('change',()=>{const dict=translations[language.value]||{};document.querySelectorAll('.nav button').forEach(b=>b.textContent=dict[original.get(b)]||original.get(b));document.getElementById('signin').textContent=dict['Discord Login ↗']||'Discord Login ↗';document.querySelector('[data-go]').textContent=dict['Explore tournaments ↗']||'Explore tournaments ↗';document.querySelector('#page-dashboard .section-head h2').textContent=dict['Platform overview']||'Platform overview';document.querySelectorAll('#page-dashboard .section-head h2')[1].textContent=dict['Choose your mode']||'Choose your mode';document.querySelector('#page-dashboard .content-grid .panel h3').textContent=dict['Upcoming tournaments']||'Upcoming tournaments';document.querySelector('#page-dashboard .content-grid .panel:nth-child(2) h3').textContent=dict['Recent activity']||'Recent activity';document.documentElement.lang=language.value});document.getElementById('signin').addEventListener('click',()=>alert('Discord sign-in is not configured yet. A secure OAuth backend is required.'));
-</script></body></html>
+/* Browser-safe Supabase configuration: publishable key only. Never place a Supabase secret key here. */
+const SUPABASE_URL = 'https://qzzcqufacuwejabtkceq.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_4p6kqF7pe3kQDANdFmjSVw_HtiyVRMM';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
+
+function setPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + name));
+  document.querySelectorAll('[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === name));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-page]').forEach(b => b.addEventListener('click', () => setPage(b.dataset.page)));
+document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => setPage(b.dataset.go)));
+document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => {
+  b.parentElement.querySelectorAll('.mode').forEach(x => x.classList.toggle('selected', x === b));
+}));
+
+const signinButton = document.getElementById('signin');
+async function renderAuth(session) {
+  const user = session?.user;
+  if (!user) {
+    signinButton.textContent = 'Discord Login ↗';
+    document.getElementById('profile-name').textContent = 'Guest player';
+    document.getElementById('profile-status').textContent = 'Not signed in';
+    document.getElementById('avatar').textContent = '?';
+    document.getElementById('avatar').style.backgroundImage = '';
+    document.getElementById('profile-message').innerHTML = '<b>Your profile is not connected</b><span>Sign in with Discord to connect your account.</span>';
+    return;
+  }
+  const meta = user.user_metadata || {};
+  const username = meta.full_name || meta.name || meta.user_name || meta.preferred_username || 'Discord player';
+  signinButton.textContent = 'Sign out';
+  document.getElementById('profile-name').textContent = username;
+  document.getElementById('profile-status').textContent = 'Signed in with Discord';
+  const avatar = document.getElementById('avatar');
+  const avatarUrl = meta.avatar_url || meta.picture;
+  avatar.textContent = avatarUrl ? '' : username.slice(0,1).toUpperCase();
+  avatar.style.backgroundImage = avatarUrl ? 'url("' + avatarUrl.replace(/"/g,'') + '")' : '';
+  avatar.style.backgroundSize = 'cover';
+  avatar.style.backgroundPosition = 'center';
+  document.getElementById('profile-message').innerHTML = '<b>You are signed in</b><span>Your Discord session is active in this browser.</span>';
+  document.getElementById('profile-notice').textContent = 'Discord authentication is connected. Tournament administration and result entry still need to be built.';
+  // Profile insert is attempted only after sign-in; RLS must allow users to insert/update their own profile.
+  const { error } = await supabaseClient.from('profiles').upsert({
+    id: user.id,
+    username,
+    discord_id: meta.provider_id || user.identities?.find(i => i.provider === 'discord')?.id || null,
+    avatar_url: avatarUrl || null
+  }, { onConflict: 'id' });
+  if (error) console.warn('Could not save profile. Check the profiles RLS policies:', error.message);
+}
+signinButton.addEventListener('click', async () => {
+  signinButton.disabled = true;
+  try {
+    const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+    if (sessionError) throw sessionError;
+    if (session) {
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) throw error;
+    } else {
+      const { error } = await supabaseClient.auth.signInWithOAuth({
+        provider: 'discord',
+        options: { redirectTo: 'https://mv4g.github.io/Tournaments/' }
+      });
+      if (error) throw error;
+    }
+  } catch (error) {
+    alert('Authentication error: ' + (error?.message || 'Check the Discord provider and redirect URL settings in Supabase.'));
+  } finally {
+    signinButton.disabled = false;
+  }
+});
+supabaseClient.auth.onAuthStateChange((_event, session) => { renderAuth(session); });
+supabaseClient.auth.getSession().then(({data,error}) => {
+  if (error) console.warn('Could not read session:', error.message);
+  renderAuth(data?.session || null);
+});
+
+async function loadPublicData() {
+  const [tournaments, profiles, results] = await Promise.all([
+    supabaseClient.from('tournaments').select('id,name,mode,status,starts_at').order('starts_at',{ascending:true}),
+    supabaseClient.from('profiles').select('id'),
+    supabaseClient.from('tournament_results').select('id')
+  ]);
+  if (!tournaments.error) {
+    const list = tournaments.data || [];
+    document.getElementById('tournament-count').textContent = list.length;
+    document.getElementById('stats-tournaments').textContent = list.length;
+    const upcoming = list.filter(t => t.status === 'upcoming' || t.status === 'live');
+    const markup = upcoming.length ? upcoming.map(t => '<div style="padding:10px 0;border-bottom:1px solid #252c3d"><b>' + escapeHtml(t.name) + '</b><div class="muted">' + escapeHtml(t.mode || '') + ' · ' + escapeHtml(t.status || '') + '</div></div>').join('') : '<b>No tournaments yet</b><span>Published tournaments will appear here.</span>';
+    document.getElementById('upcoming-list').innerHTML = markup;
+    document.getElementById('tournament-page-list').innerHTML = list.length ? list.map(t => '<div style="padding:10px 0;border-bottom:1px solid #252c3d"><b>' + escapeHtml(t.name) + '</b><div class="muted">' + escapeHtml(t.mode || '') + ' · ' + escapeHtml(t.status || '') + '</div></div>').join('') : '<b>No tournaments published</b><span>Available events will show up here.</span>';
+  } else console.warn('Tournament data unavailable:', tournaments.error.message);
+  if (!profiles.error) {
+    document.getElementById('player-count').textContent = profiles.data.length;
+    document.getElementById('stats-players').textContent = profiles.data.length;
+  } else console.warn('Profiles unavailable:', profiles.error.message);
+  if (!results.error) {
+    document.getElementById('match-count').textContent = results.data.length;
+    document.getElementById('stats-results').textContent = results.data.length;
+  } else console.warn('Results unavailable:', results.error.message);
+}
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+loadPublicData();
+</script>
+</body>
+</html>
