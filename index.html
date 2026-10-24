@@ -14,12 +14,20 @@ button,select{font:inherit;cursor:pointer}.app{max-width:1440px;margin:auto;min-
 .head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:34px 0 16px}.head h2{font-size:20px;margin:0}.head p{margin:4px 0 0;color:var(--muted);font-size:13px}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat,.panel{background:linear-gradient(145deg,#141927,#10131d);border:1px solid var(--line);border-radius:16px}.stat{padding:19px}.stat-top{color:var(--muted);font-size:12px;font-weight:700}.number{font-size:30px;font-weight:850;margin:13px 0 1px}.sub,.muted{color:var(--muted);font-size:12px}.content-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:15px}.panel{padding:21px;min-height:190px}.panel h3{margin:0;font-size:16px}.desc{color:var(--muted);font-size:13px;margin:5px 0 20px}.empty{min-height:115px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:var(--muted);gap:7px;border:1px dashed #30374a;border-radius:12px;padding:18px}.empty b{color:#dfe3f2;font-size:13px}.empty span{font-size:12px}.modes{display:flex;gap:9px;flex-wrap:wrap}.mode{border:1px solid var(--line);background:#131826;color:#aab2c8;border-radius:10px;padding:10px 15px;font-weight:750}.mode.selected{color:#eee7ff;border-color:var(--purple);background:#8b5cf61c}.page{display:none}.page.active{display:block}.notice{border:1px solid #53432a;background:#2a2115;color:#e7cda3;padding:13px 15px;border-radius:12px;margin-top:17px;font-size:12px}.profile-box{display:flex;align-items:center;gap:16px;margin-bottom:20px}.avatar{width:56px;height:56px;border-radius:17px;background:linear-gradient(135deg,#9c7cff,#41306e);display:grid;place-items:center;font-size:24px;font-weight:900}.footer{color:#687187;font-size:12px;text-align:center;padding:24px 10px 6px}
 @media(max-width:900px){.top{flex-wrap:wrap;gap:13px}.nav{order:3;flex-basis:100%}.tools{margin-left:auto}.hero-mark{display:none}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.content-grid{grid-template-columns:1fr}}
 @media(max-width:520px){.top{padding:13px 14px}.brand{font-size:16px}.sign{padding:9px 10px;font-size:12px}.nav button{padding:10px 11px;font-size:13px}.main{padding:20px 14px 40px}.hero{border-radius:18px;padding:25px 20px}.hero h1{letter-spacing:-1.4px}.cards{gap:9px}.stat{padding:14px}.number{font-size:26px}.panel{padding:16px}}
+
+.admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0 20px}
+.admin-form label{display:flex;flex-direction:column;gap:6px;color:var(--muted);font-size:12px;font-weight:700}
+.admin-form input,.admin-form select,.admin-form textarea{width:100%;background:#0c101a;color:var(--text);border:1px solid #30374a;border-radius:9px;padding:11px;font:inherit}
+.admin-form textarea{min-height:75px;resize:vertical}.admin-form .wide{grid-column:1/-1}
+.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.secondary{border:1px solid var(--line);background:#171c2a;color:var(--text);padding:10px 13px;border-radius:9px;font-weight:700}
+.data-list{display:grid;gap:10px}.data-item{border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;justify-content:space-between;align-items:center;gap:12px}.data-item small{display:block;color:var(--muted);margin-top:3px}.data-item .admin-actions{flex-shrink:0}
+@media(max-width:520px){.admin-form{grid-template-columns:1fr}.admin-form .wide{grid-column:auto}.data-item{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body><div class="app">
 <header class="top">
   <div class="brand"><div class="logo">SL</div><div>STUMBLE LABS<small>COMPETITIVE HUB</small></div></div>
-  <nav class="nav" aria-label="Main navigation"><button class="active" data-page="dashboard">Dashboard</button><button data-page="statistics">Statistics</button><button data-page="tournaments">Tournaments</button><button data-page="leaderboard">Leaderboard</button><button data-page="profile">Profile</button></nav>
+  <nav class="nav" aria-label="Main navigation"><button class="active" data-page="dashboard">Dashboard</button><button data-page="statistics">Statistics</button><button data-page="tournaments">Tournaments</button><button data-page="leaderboard">Leaderboard</button><button data-page="profile">Profile</button><button data-page="admin" id="admin-nav" hidden>Admin</button></nav>
   <div class="tools"><button class="sign" id="signin">Discord Login ↗</button></div>
 </header>
 <main class="main">
@@ -33,7 +41,38 @@ button,select{font:inherit;cursor:pointer}.app{max-width:1440px;margin:auto;min-
 <section class="page" id="page-statistics"><div class="head"><div><h2>Statistics</h2><p>Numbers based on recorded data.</p></div></div><div class="cards"><div class="stat"><div class="stat-top">Tournaments</div><div class="number" id="stats-tournaments">0</div></div><div class="stat"><div class="stat-top">Players</div><div class="number" id="stats-players">0</div></div><div class="stat"><div class="stat-top">Results</div><div class="number" id="stats-results">0</div></div><div class="stat"><div class="stat-top">Wins recorded</div><div class="number">0</div></div></div><div class="notice">Statistics are loaded from Supabase when database access policies permit it.</div></section>
 <section class="page" id="page-tournaments"><div class="head"><div><h2>Tournaments</h2><p>Browse official events and community competitions.</p></div></div><div class="panel"><div class="empty" id="tournament-page-list"><b>No tournaments published</b><span>Available events will show up here.</span></div></div></section>
 <section class="page" id="page-leaderboard"><div class="head"><div><h2>Leaderboard</h2><p>Rankings from recorded results.</p></div></div><div class="panel"><div class="empty" id="leaderboard-list"><b>No leaderboard results yet</b><span>Player rankings will appear when results are recorded.</span></div></div></section>
-<section class="page" id="page-profile"><div class="head"><div><h2>Profile</h2><p>Player identity and competitive history.</p></div></div><div class="panel"><div class="profile-box"><div class="avatar" id="avatar">?</div><div><h2 id="profile-name">Guest player</h2><div class="muted" id="profile-status">Not signed in</div></div></div><div class="empty" id="profile-message"><b>Your profile is not connected</b><span>Sign in with Discord to connect your account.</span></div><div class="notice" id="profile-notice">Tournament administration and result entry are not enabled on this page yet.</div></div></section>
+<section class="page" id="page-profile"><div class="head"><div><h2>Profile</h2><p>Player identity and competitive history.</p></div></div><div class="panel"><div class="profile-box"><div class="avatar" id="avatar">?</div><div><h2 id="profile-name">Guest player</h2><div class="muted" id="profile-status">Not signed in</div></div></div><div class="empty" id="profile-message"><b>Your profile is not connected</b><span>Sign in with Discord to connect your account.</span></div><div class="notice" id="profile-notice">Tournament administration is available to authorized administrators.</div></div></section>
+
+<section class="page" id="page-admin">
+  <div class="head"><div><h2>Admin panel</h2><p>Create tournaments and record player results.</p></div></div>
+  <div class="notice" id="admin-status">Checking administrator access…</div>
+  <div id="admin-content" hidden>
+    <div class="panel">
+      <h3 id="tournament-form-title">Create tournament</h3>
+      <p class="desc">Fields match the existing tournaments table.</p>
+      <form id="tournament-form" class="admin-form">
+        <input type="hidden" id="edit-tournament-id">
+        <label>Tournament name<input id="t-name" required maxlength="100" placeholder="e.g. Weekly 1v1 Cup"></label>
+        <label>Mode<select id="t-mode" required><option value="1v1">1v1</option><option value="2v2">2v2</option><option value="3v3">3v3</option><option value="4v4">4v4</option><option value="FFA">FFA</option><option value="Race">Race</option><option value="Elimination">Elimination</option><option value="Ranked">Ranked</option></select></label>
+        <label>Status<select id="t-status" required><option value="upcoming">Upcoming</option><option value="live">Live</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></label>
+        <label>Start date and time<input id="t-start" type="datetime-local" required></label>
+        <div class="wide admin-actions"><button class="primary" type="submit" id="t-submit">Create tournament</button><button class="secondary" type="button" id="t-cancel" hidden>Cancel edit</button></div>
+      </form>
+      <h3>Existing tournaments</h3><div class="data-list" id="admin-tournaments"><div class="empty">Loading…</div></div>
+    </div>
+    <div class="panel" style="margin-top:15px">
+      <h3>Record tournament result</h3><p class="desc">Select a tournament and a registered player.</p>
+      <form id="result-form" class="admin-form">
+        <label>Tournament<select id="r-tournament" required></select></label>
+        <label>Player<select id="r-player" required></select></label>
+        <label>Placement<input id="r-placement" type="number" min="1" step="1" required placeholder="1"></label>
+        <label>Points<input id="r-points" type="number" min="0" step="1" required placeholder="10"></label>
+        <div class="wide"><button class="primary" type="submit">Save result</button></div>
+      </form>
+      <h3>Recent results</h3><div class="data-list" id="admin-results"><div class="empty">Loading…</div></div>
+    </div>
+  </div>
+</section>
 <div class="footer">STUMBLE LABS · Community-built tournament hub · Data is shown only when recorded</div>
 </main></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -111,11 +150,161 @@ signinButton.addEventListener('click', async () => {
     signinButton.disabled = false;
   }
 });
-supabaseClient.auth.onAuthStateChange((_event, session) => { renderAuth(session); });
+supabaseClient.auth.onAuthStateChange((_event, session) => { renderAuth(session); setTimeout(() => checkAdmin(session), 0); });
 supabaseClient.auth.getSession().then(({data,error}) => {
   if (error) console.warn('Could not read session:', error.message);
-  renderAuth(data?.session || null);
+  renderAuth(data?.session || null); checkAdmin(data?.session || null);
 });
+
+
+let currentSession = null;
+let adminAccess = false;
+let cachedTournaments = [];
+let cachedProfiles = [];
+
+async function checkAdmin(session) {
+  currentSession = session;
+  const nav = document.getElementById('admin-nav');
+  const status = document.getElementById('admin-status');
+  const content = document.getElementById('admin-content');
+  adminAccess = false;
+  nav.hidden = true;
+  content.hidden = true;
+  if (!session?.user) {
+    status.textContent = 'Sign in with your authorized Discord account to access administration.';
+    return;
+  }
+  const { data, error } = await supabaseClient.rpc('is_admin', { check_user_id: session.user.id });
+  if (error) {
+    status.textContent = 'Could not verify administrator access. Check the is_admin function and Supabase permissions.';
+    console.warn('Admin check failed:', error.message);
+    return;
+  }
+  adminAccess = data === true;
+  nav.hidden = !adminAccess;
+  content.hidden = !adminAccess;
+  status.textContent = adminAccess ? 'Administrator access verified.' : 'Your account does not have administrator permissions.';
+  if (adminAccess) await loadAdminData();
+}
+
+function resetTournamentForm() {
+  document.getElementById('tournament-form').reset();
+  document.getElementById('edit-tournament-id').value = '';
+  document.getElementById('tournament-form-title').textContent = 'Create tournament';
+  document.getElementById('t-submit').textContent = 'Create tournament';
+  document.getElementById('t-cancel').hidden = true;
+}
+document.getElementById('t-cancel').addEventListener('click', resetTournamentForm);
+
+document.getElementById('tournament-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  if (!adminAccess || !currentSession?.user) return alert('Administrator access required.');
+  const button = document.getElementById('t-submit');
+  button.disabled = true;
+  const editId = document.getElementById('edit-tournament-id').value;
+  const payload = {
+    name: document.getElementById('t-name').value.trim(),
+    mode: document.getElementById('t-mode').value,
+    status: document.getElementById('t-status').value,
+    starts_at: new Date(document.getElementById('t-start').value).toISOString()
+  };
+  try {
+    const request = editId
+      ? supabaseClient.from('tournaments').update(payload).eq('id', editId)
+      : supabaseClient.from('tournaments').insert(payload);
+    const { error } = await request;
+    if (error) throw error;
+    resetTournamentForm();
+    await loadAdminData();
+    await loadPublicData();
+    alert(editId ? 'Tournament updated.' : 'Tournament created.');
+  } catch (error) {
+    alert('Could not save tournament: ' + (error?.message || 'Unknown error'));
+  } finally { button.disabled = false; }
+});
+
+document.getElementById('result-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  if (!adminAccess || !currentSession?.user) return alert('Administrator access required.');
+  const payload = {
+    tournament_id: document.getElementById('r-tournament').value,
+    player_id: document.getElementById('r-player').value,
+    placement: Number(document.getElementById('r-placement').value),
+    points: Number(document.getElementById('r-points').value)
+  };
+  try {
+    const { error } = await supabaseClient.from('tournament_results').insert(payload);
+    if (error) throw error;
+    document.getElementById('result-form').reset();
+    await loadAdminData();
+    await loadPublicData();
+    alert('Result saved.');
+  } catch (error) {
+    alert('Could not save result: ' + (error?.message || 'Unknown error'));
+  }
+});
+
+async function loadAdminData() {
+  if (!adminAccess) return;
+  const [tRes, pRes, rRes] = await Promise.all([
+    supabaseClient.from('tournaments').select('id,name,mode,status,starts_at').order('starts_at',{ascending:true}),
+    supabaseClient.from('profiles').select('id,username,discord_id'),
+    supabaseClient.from('tournament_results').select('id,tournament_id,player_id,placement,points').order('created_at',{ascending:false}).limit(30)
+  ]);
+  const tBox = document.getElementById('admin-tournaments');
+  const rTournament = document.getElementById('r-tournament');
+  const rPlayer = document.getElementById('r-player');
+  if (tRes.error) {
+    tBox.innerHTML = '<div class="empty"><b>Could not load tournaments</b><span>'+escapeHtml(tRes.error.message)+'</span></div>';
+  } else {
+    cachedTournaments = tRes.data || [];
+    tBox.innerHTML = cachedTournaments.length ? cachedTournaments.map(t => `
+      <div class="data-item"><div><b>${escapeHtml(t.name)}</b><small>${escapeHtml(t.mode)} · ${escapeHtml(t.status)} · ${t.starts_at ? escapeHtml(new Date(t.starts_at).toLocaleString()) : 'No date'}</small></div>
+      <div class="admin-actions"><button class="secondary" data-edit-t="${escapeHtml(t.id)}">Edit</button><button class="secondary" data-delete-t="${escapeHtml(t.id)}">Delete</button></div></div>`).join('') : '<div class="empty"><b>No tournaments yet</b><span>Create one using the form above.</span></div>';
+    rTournament.innerHTML = '<option value="">Choose tournament</option>' + cachedTournaments.map(t => `<option value="${escapeHtml(t.id)}">${escapeHtml(t.name)}</option>`).join('');
+  }
+  if (pRes.error) {
+    rPlayer.innerHTML = '<option value="">Could not load players</option>';
+    console.warn('Could not load profiles:', pRes.error.message);
+  } else {
+    cachedProfiles = pRes.data || [];
+    rPlayer.innerHTML = '<option value="">Choose player</option>' + cachedProfiles.map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.username || p.discord_id || p.id)}</option>`).join('');
+  }
+  tBox.querySelectorAll('[data-edit-t]').forEach(button => button.addEventListener('click', () => {
+    const t = cachedTournaments.find(item => item.id === button.dataset.editT);
+    if (!t) return;
+    document.getElementById('edit-tournament-id').value = t.id;
+    document.getElementById('t-name').value = t.name || '';
+    document.getElementById('t-mode').value = t.mode || '1v1';
+    document.getElementById('t-status').value = t.status || 'upcoming';
+    document.getElementById('t-start').value = t.starts_at ? new Date(new Date(t.starts_at).getTime()-new Date(t.starts_at).getTimezoneOffset()*60000).toISOString().slice(0,16) : '';
+    document.getElementById('tournament-form-title').textContent = 'Edit tournament';
+    document.getElementById('t-submit').textContent = 'Save changes';
+    document.getElementById('t-cancel').hidden = false;
+    document.getElementById('tournament-form-title').scrollIntoView({behavior:'smooth',block:'center'});
+  }));
+  tBox.querySelectorAll('[data-delete-t]').forEach(button => button.addEventListener('click', async () => {
+    const t = cachedTournaments.find(item => item.id === button.dataset.deleteT);
+    if (!t || !confirm(`Delete "${t.name}"? This cannot be undone.`)) return;
+    const { error } = await supabaseClient.from('tournaments').delete().eq('id',t.id);
+    if (error) alert('Could not delete tournament: '+error.message);
+    else { resetTournamentForm(); await loadAdminData(); await loadPublicData(); }
+  }));
+  const rBox = document.getElementById('admin-results');
+  if (rRes.error) {
+    rBox.innerHTML = '<div class="empty"><b>Could not load results</b><span>'+escapeHtml(rRes.error.message)+'</span></div>';
+  } else {
+    const tournamentsById = Object.fromEntries(cachedTournaments.map(t => [t.id,t.name]));
+    const profilesById = Object.fromEntries(cachedProfiles.map(p => [p.id,p.username || p.discord_id || p.id]));
+    rBox.innerHTML = rRes.data?.length ? rRes.data.map(r => `<div class="data-item"><div><b>${escapeHtml(profilesById[r.player_id] || 'Unknown player')}</b><small>${escapeHtml(tournamentsById[r.tournament_id] || 'Unknown tournament')} · Place ${r.placement} · ${r.points} points</small></div><button class="secondary" data-delete-r="${escapeHtml(r.id)}">Delete</button></div>`).join('') : '<div class="empty"><b>No results yet</b><span>Saved results will appear here.</span></div>';
+    rBox.querySelectorAll('[data-delete-r]').forEach(button => button.addEventListener('click', async () => {
+      if (!confirm('Delete this result?')) return;
+      const { error } = await supabaseClient.from('tournament_results').delete().eq('id',button.dataset.deleteR);
+      if (error) alert('Could not delete result: '+error.message);
+      else { await loadAdminData(); await loadPublicData(); }
+    }));
+  }
+}
 
 async function loadPublicData() {
   const [tournaments, profiles, results] = await Promise.all([
