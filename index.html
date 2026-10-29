@@ -2183,6 +2183,9 @@ body::after{opacity:.025}
 </button>
 <button class="hidden" data-page="admin" id="admin-nav">⌘ <span class="nav-label">Admin</span>
 </button>
+<button class="hidden" data-page="cc" id="cc-nav">▧ <span class="nav-label">CC Panel</span></button>
+<button class="hidden" data-page="owner" id="owner-nav">♛ <span class="nav-label">Owner</span></button>
+<button data-page="create" id="create-nav">＋ <span class="nav-label">Create</span></button>
 </nav>
 <div class="actions">
 <div class="wallet-chip" title="Credit balance">
@@ -2787,6 +2790,20 @@ body::after{opacity:.025}
 <div class="grid" id="notification-list">
 </div>
 </section>
+<section class="page" id="page-create">
+<div class="page-head"><div><div class="eyebrow">EVENT STUDIO</div><h1 class="page-title">Create Tournament</h1><p class="description">Tournament setup is separate from moderation tools.</p></div></div>
+<div class="panel pad"><div class="panel-head"><div><h3>New tournament</h3><p>Opens the existing secure tournament form.</p></div></div><p class="description">The existing database procedure remains responsible for publishing. This panel does not grant credits.</p><button class="btn primary" data-action="create">＋ Create tournament</button></div>
+</section>
+<section class="page" id="page-cc">
+<div class="page-head"><div><div class="eyebrow">CREATIVE STUDIO</div><h1 class="page-title">CC Panel · Cover Creator</h1><p class="description">Create a tournament cover, preview it and export a PNG.</p></div></div>
+<div class="panel pad" style="padding:0;overflow:hidden"><iframe title="Stumble Labs Cover Creator" src="cover-creator/cover-creator.html" loading="lazy" style="display:block;width:100%;height:min(1000px,85vh);min-height:720px;border:0;background:#10131d"></iframe></div>
+</section>
+<section class="page" id="page-owner">
+<div class="page-head"><div><div class="eyebrow">OWNER ONLY</div><h1 class="page-title">Owner Panel</h1><p class="description">Ban records and an audit timeline with exact timestamps.</p></div><span class="pill warning">OWNER ACCESS</span></div>
+<div class="callout" style="margin-bottom:14px">This panel is only fully active after applying the included Supabase migration and setting the owner UUID. Do not expose the service-role key in the browser.</div>
+<div class="grid two"><div class="panel pad"><div class="panel-head"><div><h3>Ban a user</h3><p>Use the user's Supabase Auth UUID and record a reason.</p></div></div><form id="owner-ban-form" class="form-grid"><div class="field wide"><label for="owner-ban-user">User UUID</label><input id="owner-ban-user" required placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div><div class="field wide"><label for="owner-ban-reason">Reason</label><input id="owner-ban-reason" required maxlength="300" placeholder="Rule violation and evidence reference"></div><div class="field wide"><button class="btn primary" type="submit">Ban user</button></div></form><div class="panel-head" style="margin-top:20px"><div><h3>Current bans</h3><p>Active bans from Supabase.</p></div><button class="btn small" id="owner-refresh">↻ Refresh</button></div><div id="owner-ban-list" class="activity-list"><div class="empty-state"><strong>Migration required</strong><span>Apply the included SQL file first.</span></div></div></div>
+<div class="panel pad"><div class="panel-head"><div><h3>Audit log</h3><p>UTC timestamps are shown to the second.</p></div></div><div id="owner-audit-list" class="activity-list"><div class="empty-state"><strong>Migration required</strong><span>Audit records appear after database setup.</span></div></div></div></div>
+</section>
 <section class="page" id="page-admin">
 <div class="page-head">
 <div>
@@ -2799,89 +2816,16 @@ body::after{opacity:.025}
 <div class="callout" style="margin-bottom:15px">Admin actions are enforced by database policies and SQL functions. Hiding a button in the browser is not security.</div>
 <div class="admin-tabs">
 <button class="admin-tab active" data-admin-tab="admin-tournaments">Tournaments</button>
-<button class="admin-tab" data-admin-tab="admin-credits">Credits</button>
+
 <button class="admin-tab" data-admin-tab="admin-announcements">Announcements</button>
 <button class="admin-tab" data-admin-tab="admin-shop">Shop inventory</button>
 </div>
 <div class="admin-pane active" id="admin-tournaments">
 <div class="grid two">
 <div class="panel pad">
-<div class="panel-head">
-<div>
-<h3>Create a tournament</h3>
-<p>Credits are charged atomically by the database.</p>
-</div>
-<span class="pill warning">COST: 25 ✦</span>
-</div>
-<form id="admin-tournament-form" class="form-grid">
-<div class="field wide">
-<label for="admin-event-name">Tournament name</label>
-<input id="admin-event-name" required maxlength="80" placeholder="Midnight Rush #01">
-</div>
-<div class="field">
-<label for="admin-event-mode">Mode</label>
-<select id="admin-event-mode">
-<option>1v1</option>
-<option>2v2</option>
-<option>3v3</option>
-<option>4v4</option>
-<option>FFA</option>
-</select>
-</div>
-<div class="field">
-<label for="admin-event-cap">Player cap</label>
-<select id="admin-event-cap">
-<option value="8">8 players</option>
-<option value="16" selected>16 players</option>
-<option value="32">32 players</option>
-<option value="64">64 players</option>
-<option value="100">100 players</option>
-</select>
-</div>
-<div class="field">
-<label for="admin-event-start">Start time</label>
-<input id="admin-event-start" type="datetime-local" required>
-</div>
-<div class="field">
-<label for="admin-event-region">Region</label>
-<select id="admin-event-region">
-<option>Global</option>
-<option>Europe</option>
-<option>North America</option>
-<option>South America</option>
-<option>Asia</option>
-<option>Africa</option>
-<option>Oceania</option>
-</select>
-</div>
-<div class="field">
-<label for="admin-event-fee">Entry fee (credits)</label>
-<input id="admin-event-fee" type="number" min="0" max="10000" value="0">
-</div>
-<div class="field">
-<label for="admin-event-prize">Prize description</label>
-<input id="admin-event-prize" maxlength="100" placeholder="Community bragging rights">
-</div>
-<div class="field">
-<label for="admin-event-color">Accent color</label>
-<input id="admin-event-color" type="color" value="#9b7bff">
-</div>
-<div class="field">
-<label for="admin-event-image">Banner image URL</label>
-<input id="admin-event-image" type="url" placeholder="https://...">
-</div>
-<div class="field wide">
-<label for="admin-event-description">Description</label>
-<textarea id="admin-event-description" maxlength="500" placeholder="Rules, format, and details...">
-</textarea>
-</div>
-<div class="field wide">
-<div class="callout">This event costs 25 credits to publish. The fee is deducted only if the database transaction succeeds.</div>
-</div>
-<div class="field wide">
-<button class="btn primary" type="submit">Publish tournament · 25 ✦</button>
-</div>
-</form>
+<div class="panel-head"><div><h3>Tournament management</h3><p>Creation is separated into the Create page.</p></div></div>
+<div class="callout">Admin Panel is for moderation and managing existing events. Tournament creation lives in its own section.</div>
+<button class="btn primary" data-page="create" style="margin-top:14px">Open tournament creation</button>
 </div>
 <div class="panel pad">
 <div class="panel-head">
@@ -2892,46 +2836,6 @@ body::after{opacity:.025}
 <button class="btn small" id="admin-refresh">↻</button>
 </div>
 <div class="grid" id="admin-event-list">
-</div>
-</div>
-</div>
-</div>
-<div class="admin-pane" id="admin-credits">
-<div class="grid two">
-<div class="panel pad">
-<div class="panel-head">
-<div>
-<h3>Grant credits</h3>
-<p>Legitimate rewards and corrections only.</p>
-</div>
-</div>
-<form id="grant-credits-form" class="form-grid">
-<div class="field wide">
-<label for="grant-user-id">Player auth UUID</label>
-<input id="grant-user-id" required placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-</div>
-<div class="field">
-<label for="grant-amount">Amount</label>
-<input id="grant-amount" type="number" min="1" max="100000" required value="100">
-</div>
-<div class="field">
-<label for="grant-reason">Reason</label>
-<input id="grant-reason" maxlength="120" required placeholder="Community event reward">
-</div>
-<div class="field wide">
-<button class="btn primary" type="submit">Grant credits securely</button>
-</div>
-</form>
-<p class="hint">Requires the SQL migration and an authorized administrator.</p>
-</div>
-<div class="panel pad">
-<div class="panel-head">
-<div>
-<h3>Wallet audit</h3>
-<p>Recent credit movements.</p>
-</div>
-</div>
-<div id="admin-credit-audit" class="activity-list">
 </div>
 </div>
 </div>
@@ -3075,10 +2979,10 @@ const urlSafe=v=>{try{const u=new URL(v);return['https:','http:'].includes(u.pro
 const uuidValid=v=>/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(v||''));
 const uid=()=>crypto?.randomUUID?crypto.randomUUID():`local-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 const store={get(k,d){try{const v=localStorage.getItem(`${CONFIG.prefix}:${k}`);return v===null?d:JSON.parse(v);}catch{return d;}},set(k,v){try{localStorage.setItem(`${CONFIG.prefix}:${k}`,JSON.stringify(v));return true;}catch{return false;}}};
-const state={client:null,authReady:false,databaseReady:false,session:null,user:null,isAdmin:false,page:'dashboard',mode:'all',tournaments:[],profiles:[],results:[],leaderboard:[],notifications:[],transactions:[],balance:0,purchases:[],registrations:[],profile:{username:'',region:'Global',bio:''},preferences:{tournaments:true,credits:true,news:true},emotes:['Punch','Kick','Hug','Banana'],dataMode:'demo',loading:false};
+const state={client:null,authReady:false,databaseReady:false,session:null,user:null,isAdmin:false,isOwner:false,page:'dashboard',mode:'all',tournaments:[],profiles:[],results:[],leaderboard:[],notifications:[],transactions:[],balance:0,purchases:[],registrations:[],profile:{username:'',region:'Global',bio:''},preferences:{tournaments:true,credits:true,news:true},emotes:['Punch','Kick','Hug','Banana'],dataMode:'demo',loading:false};
 function toast(title,message,type='success',duration=4300){const el=document.createElement('div');el.className=`toast ${type==='error'?'error':type==='warning'?'warning':''}`;el.innerHTML=`<span class="toast-icon">${type==='error'?'!':type==='warning'?'⚑':'✓'}</span><span class="toast-copy"><strong>${esc(title)}</strong><p>${esc(message)}</p></span><button class="toast-close" aria-label="Dismiss">×</button>`;$('#toast-stack').append(el);$('.toast-close',el).onclick=()=>el.remove();setTimeout(()=>el.remove(),duration);}
 function notify(title,body,category='news',persist=true){const n={id:uid(),title,body,category,read:false,created_at:new Date().toISOString(),local:true};state.notifications.unshift(n);if(persist)store.set('notifications',state.notifications.filter(x=>x.local).slice(0,80));renderNotifications();renderHomeActivity();const pref=category==='credits'?'credits':category==='tournament'?'tournaments':'news';if(state.preferences[pref])toast(title,body);}
-function switchPage(page){const valid=['dashboard','tournaments','leaderboard','shop','wallet','profile','notifications','admin'];if(!valid.includes(page))page='dashboard';if(page==='admin'&&!state.isAdmin){toast('Restricted area','Administrator access is required.','error');return;}state.page=page;$$('.page').forEach(x=>x.classList.toggle('active',x.id===`page-${page}`));$$('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));if(page==='wallet')renderWallet();if(page==='shop')renderShop();if(page==='profile')renderProfile();if(page==='notifications')renderNotifications();if(page==='admin')renderAdmin();window.scrollTo({top:0,behavior:'smooth'});history.replaceState(null,'',`#${page}`);}
+function switchPage(page){const valid=['dashboard','tournaments','leaderboard','shop','wallet','profile','notifications','admin','create','cc','owner'];if(!valid.includes(page))page='dashboard';if(page==='admin'&&!state.isAdmin){toast('Restricted area','Administrator access is required.','error');return;}if(page==='cc'&&!state.isAdmin){toast('Restricted area','CC Panel access is restricted to staff.','error');return;}if(page==='owner'&&!state.isOwner){toast('Restricted area','Owner access is required.','error');return;}state.page=page;$$('.page').forEach(x=>x.classList.toggle('active',x.id===`page-${page}`));$$('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));if(page==='wallet')renderWallet();if(page==='shop')renderShop();if(page==='profile')renderProfile();if(page==='notifications')renderNotifications();if(page==='admin')renderAdmin();if(page==='owner')loadOwnerPanel();window.scrollTo({top:0,behavior:'smooth'});history.replaceState(null,'',`#${page}`);}
 function openModal(title,subtitle,body,footer='',small=false){$('#modal-title').textContent=title;$('#modal-subtitle').textContent=subtitle||'';$('#modal-body').innerHTML=body;$('#modal-footer').innerHTML=footer;$('#modal-content').classList.toggle('small',small);$('#modal-backdrop').classList.add('open');document.body.style.overflow='hidden';}
 function closeModal(){$('#modal-backdrop').classList.remove('open');document.body.style.overflow='';}
 function setConnection(text,live){$('#connection-label').textContent=text;$('#connection-label').style.color=live?'#8feec5':'#777b98';$('#profile-db-status').textContent=live?'Live Supabase connection':'Preview / migration required';$('#profile-db-pill').textContent=live?'LIVE':'DEMO';$('#profile-db-pill').className=`pill ${live?'success':'warning'}`;}
@@ -3089,9 +2993,9 @@ async function initSupabase(){if(!window.supabase?.createClient){setConnection('
 async function signIn(){if(!state.client){toast('Preview mode','Discord login requires the configured Supabase project.','warning');return;}try{const{error}=await state.client.auth.signInWithOAuth({provider:'discord',options:{redirectTo:location.origin+location.pathname,scopes:'identify email'}});if(error)throw error;}catch(e){toast('Discord login failed',e.message||'Check Discord OAuth settings.','error');}}
 async function signOut(){if(!state.client)return;const{error}=await state.client.auth.signOut();if(error)toast('Sign out failed',error.message,'error');}
 function renderAuth(){const b=$('#signin-button');if(state.user){$('#signin-label').textContent=currentName().slice(0,16);b.title='Click to sign out';}else{$('#signin-label').textContent='Discord Login';b.title='Sign in with Discord';}$('#profile-discord-status').textContent=state.user?'Discord account connected':'Not connected';$('#profile-discord-pill').textContent=state.user?'CONNECTED':'GUEST';$('#profile-discord-pill').className=`pill ${state.user?'success':'warning'}`;}
-async function authChanged(event){renderAuth();if(state.user){await upsertProfile();await checkAdmin();await loadAccount();}else{state.isAdmin=false;state.balance=0;state.transactions=[];state.purchases=[];state.registrations=store.get('registrations',[]);state.notifications=[...SEED_NOTICES,...store.get('notifications',[])];$('#admin-nav').classList.add('hidden');}await loadPlatform();renderAll();if(event==='SIGNED_IN')toast('Discord connected',`Welcome back, ${currentName()}.`);if(event==='SIGNED_OUT')toast('Signed out','Your session has ended.');}
+async function authChanged(event){renderAuth();if(state.user){await upsertProfile();await checkAdmin();await loadAccount();}else{state.isAdmin=false;state.balance=0;state.transactions=[];state.purchases=[];state.registrations=store.get('registrations',[]);state.notifications=[...SEED_NOTICES,...store.get('notifications',[])];$('#admin-nav').classList.add('hidden');$('#cc-nav').classList.add('hidden');$('#owner-nav').classList.add('hidden');state.isOwner=false;}await loadPlatform();renderAll();if(event==='SIGNED_IN')toast('Discord connected',`Welcome back, ${currentName()}.`);if(event==='SIGNED_OUT')toast('Signed out','Your session has ended.');}
 async function upsertProfile(){if(!state.client||!state.user)return;const m=state.user.user_metadata||{};const row={id:state.user.id,username:state.profile.username||m.global_name||m.full_name||m.name||state.user.email?.split('@')[0]||'Player',discord_id:m.provider_id||state.user.identities?.find(i=>i.provider==='discord')?.id||null,avatar_url:m.avatar_url||m.picture||null};try{const{error}=await state.client.from('profiles').upsert(row,{onConflict:'id'});if(error)console.warn('Profile upsert:',error.message);}catch(e){console.warn(e);}}
-async function checkAdmin(){state.isAdmin=false;if(!state.client||!state.user){$('#admin-nav').classList.add('hidden');return;}try{const{data,error}=await state.client.rpc('is_admin',{check_user_id:state.user.id});if(!error)state.isAdmin=data===true;else{const r=await state.client.from('sl_admin_users').select('user_id').eq('user_id',state.user.id).limit(1);state.isAdmin=!r.error&&Boolean(r.data?.length);}}catch(e){console.warn(e);}$('#admin-nav').classList.toggle('hidden',!state.isAdmin);$('#profile-admin-pill').textContent=state.isAdmin?'YES':'NO';$('#profile-admin-pill').className=`pill ${state.isAdmin?'success':''}`;}
+async function checkAdmin(){state.isAdmin=false;if(!state.client||!state.user){$('#admin-nav').classList.add('hidden');return;}try{const{data,error}=await state.client.rpc('is_admin',{check_user_id:state.user.id});if(!error)state.isAdmin=data===true;else{const r=await state.client.from('sl_admin_users').select('user_id').eq('user_id',state.user.id).limit(1);state.isAdmin=!r.error&&Boolean(r.data?.length);}}catch(e){console.warn(e);}state.isOwner=false;try{const o=await state.client.rpc('sl_is_owner');state.isOwner=!o.error&&o.data===true;}catch(e){}if(state.isOwner)state.isAdmin=true;$('#admin-nav').classList.toggle('hidden',!state.isAdmin);$('#cc-nav').classList.toggle('hidden',!state.isAdmin);$('#profile-admin-pill').textContent=state.isAdmin?'YES':'NO';$('#profile-admin-pill').className=`pill ${state.isAdmin?'success':''}`;$('#owner-nav').classList.toggle('hidden',!state.isOwner);}
 async function loadAccount(){if(!state.client||!state.user)return;const u=state.user.id;const r=await Promise.allSettled([state.client.from('sl_wallets').select('balance').eq('user_id',u).maybeSingle(),state.client.from('sl_credit_transactions').select('id,amount,kind,description,created_at').eq('user_id',u).order('created_at',{ascending:false}).limit(50),state.client.from('sl_notifications').select('id,title,body,category,read,created_at').eq('user_id',u).order('created_at',{ascending:false}).limit(80),state.client.from('sl_purchases').select('id,item_id,item_name,price,created_at').eq('user_id',u).order('created_at',{ascending:false}).limit(30),state.client.from('sl_tournament_entries').select('tournament_id,user_id,created_at').eq('user_id',u)]);let found=false;if(r[0].status==='fulfilled'&&!r[0].value.error){state.balance=Number(r[0].value.data?.balance||0);found=true;}else state.balance=0;if(r[1].status==='fulfilled'&&!r[1].value.error){state.transactions=r[1].value.data||[];found=true;}else state.transactions=[];if(r[2].status==='fulfilled'&&!r[2].value.error){state.notifications=[...(r[2].value.data||[]),...store.get('notifications',[])];found=true;}else state.notifications=[...SEED_NOTICES,...store.get('notifications',[])];if(r[3].status==='fulfilled'&&!r[3].value.error){state.purchases=r[3].value.data||[];found=true;}if(r[4].status==='fulfilled'&&!r[4].value.error){state.registrations=r[4].value.data||[];found=true;}state.databaseReady=found;setConnection(found?'SUPABASE CONNECTED · ACCOUNT DATA LIVE':'AUTH CONNECTED · RUN SQL MIGRATION FOR FEATURES',found);}
 function normalizeTournament(x){return{...x,id:String(x.id||uid()),name:x.name||'Community tournament',mode:x.mode||'FFA',status:x.status||'upcoming',starts_at:x.starts_at||null,max_players:Number(x.max_players||16),entry_fee:Number(x.entry_fee||0),prize_type:x.prize_type||'Community event',region:x.region||'Global',color:/^#[0-9a-f]{6}$/i.test(x.color||'')?x.color:'#9b7bff',description:x.description||'Community-created tournament. Check the details and register to join.',players_count:Number(x.players_count||0),created_at:x.created_at||new Date().toISOString(),image_url:urlSafe(x.image_url||'')};}
 async function loadPlatform(){let live=false;if(state.client){const r=await Promise.allSettled([state.client.from('sl_tournaments').select('*').order('starts_at',{ascending:true}).limit(100),state.client.from('profiles').select('id,username,discord_id,avatar_url,created_at').limit(500),state.client.from('tournament_results').select('id,tournament_id,player_id,placement,points,created_at').order('created_at',{ascending:false}).limit(1000)]);if(r[0].status==='fulfilled'&&!r[0].value.error){state.tournaments=(r[0].value.data||[]).map(normalizeTournament);live=true;}else state.tournaments=store.get('demo-tournaments',[]).map(normalizeTournament);if(r[1].status==='fulfilled'&&!r[1].value.error){state.profiles=r[1].value.data||[];live=true;}else state.profiles=state.user?[{id:state.user.id,username:currentName(),avatar_url:currentAvatar()}]:[];if(r[2].status==='fulfilled'&&!r[2].value.error){state.results=r[2].value.data||[];live=true;}else state.results=store.get('demo-results',[]);}else{state.tournaments=store.get('demo-tournaments',[]).map(normalizeTournament);state.profiles=[];state.results=store.get('demo-results',[]);}state.dataMode=live?'live':'demo';$('#stats-mode').textContent=live?'LIVE DATA':'PREVIEW DATA';$('#stats-mode').className=`pill ${live?'success':'purple'}`;}
@@ -3107,6 +3011,7 @@ function renderNotifications(){const filter=$('#notification-filter')?.value||'a
 function renderHomeActivity(){const a=[...state.notifications].sort((x,y)=>new Date(y.created_at||0)-new Date(x.created_at||0)).slice(0,4),icons={tournament:'◈',credits:'✦',news:'◉'};$('#home-activity').innerHTML=a.length?a.map(n=>`<div class="activity-item"><div class="activity-icon ${n.category==='credits'?'yellow':n.category==='news'?'purple':''}">${icons[n.category]||'◉'}</div><div class="activity-copy"><strong>${esc(n.title)}</strong><p>${esc(n.body)}</p></div><span class="activity-time">${esc(ago(n.created_at))}</span></div>`).join(''):`<div class="empty-state"><strong>No recent activity</strong><span>You're at the start of the timeline.</span></div>`;}
 function renderProfile(){const name=currentName(),av=currentAvatar();$('#profile-name').textContent=name;$('#profile-handle').textContent=state.user?`Discord ID · ${state.user.id.slice(0,8)}…`:'Discord account not connected';$('#profile-avatar').innerHTML=av?`<img src="${esc(av)}" alt="Profile avatar">`:esc(name.slice(0,2).toUpperCase());$('#profile-bio').textContent=state.profile.bio||(state.user?'Competitive player in the Stumble Labs universe.':'Sign in to connect your competitive identity.');$('#profile-display-name').value=state.profile.username||(state.user?name:'');$('#profile-region').value=state.profile.region||'Global';$('#profile-bio-input').value=state.profile.bio||'';$('#profile-results').textContent=fmt(state.results.filter(r=>(r.player_id||r.user_id)===state.user?.id).length);$('#profile-points').textContent=fmt(state.leaderboard.find(x=>x.id===state.user?.id)?.points||0);$('#profile-emotes').innerHTML=EMOTES.map(e=>`<label class="emote-option"><input type="checkbox" value="${esc(e)}" ${state.emotes.includes(e)?'checked':''}><span>${esc(e)}</span></label>`).join('');}
 function renderAdmin(){if(!state.isAdmin)return;$('#admin-event-list').innerHTML=state.tournaments.length?state.tournaments.map(t=>`<div class="quick-action"><span class="quick-icon">◈</span><span class="quick-copy"><strong>${esc(t.name)}</strong><span>${esc(t.mode)} · ${esc(dateFmt(t.starts_at))} · ${fmt(t.entry_fee)} credits</span></span><button class="btn small danger" data-action="delete" data-id="${esc(t.id)}">Delete</button></div>`).join(''):`<div class="empty-state"><strong>No events to manage</strong><span>Create a tournament using the form.</span></div>`;$('#admin-credit-audit').innerHTML=state.transactions.length?state.transactions.slice(0,12).map(t=>`<div class="activity-item"><div class="activity-icon yellow">✦</div><div class="activity-copy"><strong>${esc(t.description||t.kind||'Credit transaction')}</strong><p>${esc(ago(t.created_at))}</p></div><span class="score">${Number(t.amount)>0?'+':''}${fmt(t.amount)}</span></div>`).join(''):`<div class="empty-state"><strong>No audit activity</strong><span>Transactions appear after database setup.</span></div>`;$('#admin-announcement-list').innerHTML=state.notifications.filter(n=>['news','tournament'].includes(n.category)).slice(0,10).map(n=>`<div class="activity-item"><div class="activity-icon purple">◉</div><div class="activity-copy"><strong>${esc(n.title)}</strong><p>${esc(n.body)}</p></div></div>`).join('')||'<div class="empty-state"><strong>No announcements yet</strong></div>';renderShop();}
+async function loadOwnerPanel(){if(!state.isOwner||!state.client)return;const logs=$('#owner-audit-list'),bans=$('#owner-ban-list');logs.innerHTML='<div class="empty-state"><span>Loading audit events…</span></div>';bans.innerHTML='<div class="empty-state"><span>Loading bans…</span></div>';try{const r=await state.client.rpc('sl_owner_audit_recent',{p_limit:100});if(r.error)throw r.error;logs.innerHTML=(r.data||[]).length?(r.data||[]).map(x=>`<div class="activity-item"><div class="activity-icon purple">◷</div><div class="activity-copy"><strong>${esc(x.action||'Action')}</strong><p>${esc(x.actor_id||'system')} · ${esc(x.target_id||'—')}<br>${esc(x.created_at?new Date(x.created_at).toISOString().replace('T',' ').replace('Z',' UTC'): 'Unknown time')}<br>${esc(x.details||'')}</p></div></div>`).join(''):'<div class="empty-state"><strong>No audit events</strong></div>';}catch(e){logs.innerHTML=`<div class="empty-state"><strong>Audit log unavailable</strong><span>${esc(readError(e))}</span></div>`;}try{const r=await state.client.from('sl_user_bans').select('*').is('lifted_at',null).order('created_at',{ascending:false}).limit(100);if(r.error)throw r.error;bans.innerHTML=(r.data||[]).length?(r.data||[]).map(x=>`<div class="activity-item"><div class="activity-icon">⛔</div><div class="activity-copy"><strong>${esc(x.user_id)}</strong><p>${esc(x.reason||'No reason')}<br>${esc(x.created_at?new Date(x.created_at).toISOString().replace('T',' ').replace('Z',' UTC'):'')}</p></div><button class="btn small" data-unban="${esc(x.id)}">Unban</button></div>`).join(''):'<div class="empty-state"><strong>No active bans</strong></div>';}catch(e){bans.innerHTML=`<div class="empty-state"><strong>Ban list unavailable</strong><span>${esc(readError(e))}</span></div>`;}}
 function renderAll(){renderAuth();renderTournaments();renderLeaderboard();renderWallet();renderShop();renderNotifications();renderProfile();if(state.isAdmin)renderAdmin();}
 function readError(e){const m=String(e?.message||e||'Unknown database error');if(m.includes('sl_create_tournament')||m.includes('sl_purchase_item')||m.includes('sl_register_tournament'))return'Run the included SQL migration in Supabase SQL Editor, then reload the site.';if(m.toLowerCase().includes('insufficient'))return'Your wallet does not have enough credits.';if(m.toLowerCase().includes('admin'))return'Your account is not authorized for this action.';if(m.toLowerCase().includes('permission')||m.toLowerCase().includes('policy'))return'Database rejected this action. Check RLS policies and the SQL migration.';return m;}
 function createModal(){if(!needLogin('tournament creation'))return;const d=new Date(Date.now()+86400000);d.setMinutes(Math.ceil(d.getMinutes()/15)*15,0,0);const local=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);openModal('Create a tournament','Publish a community event. The database deducts credits only if the transaction succeeds.',`<form id="create-modal-form" class="form-grid"><div class="field wide"><label for="m-name">Tournament name</label><input id="m-name" required maxlength="80" placeholder="Midnight Rush #01"></div><div class="field"><label for="m-mode">Mode</label><select id="m-mode"><option>1v1</option><option>2v2</option><option>3v3</option><option>4v4</option><option>FFA</option></select></div><div class="field"><label for="m-cap">Player cap</label><select id="m-cap"><option value="8">8 players</option><option value="16" selected>16 players</option><option value="32">32 players</option><option value="64">64 players</option><option value="100">100 players</option></select></div><div class="field"><label for="m-start">Start time</label><input id="m-start" type="datetime-local" required value="${local}"></div><div class="field"><label for="m-region">Region</label><select id="m-region"><option>Global</option><option>Europe</option><option>North America</option><option>South America</option><option>Asia</option><option>Africa</option><option>Oceania</option></select></div><div class="field"><label for="m-fee">Entry fee (credits)</label><input id="m-fee" type="number" min="0" max="10000" value="0"></div><div class="field"><label for="m-prize">Prize description</label><input id="m-prize" maxlength="100" placeholder="Community bragging rights"></div><div class="field"><label for="m-color">Accent color</label><input id="m-color" type="color" value="#9b7bff"></div><div class="field"><label for="m-image">Banner image URL</label><input id="m-image" type="url" placeholder="https://..."></div><div class="field wide"><label for="m-desc">Description</label><textarea id="m-desc" maxlength="500" placeholder="Rules, format, and details..."></textarea></div><div class="field wide"><div class="callout">Creation fee: <b>25 credits</b>. The entry fee is displayed for now and is not automatically collected.</div></div></form>`,`<button class="btn" data-cancel>Cancel</button><button class="btn primary" id="modal-create-submit">Publish · 25 ✦</button>`);$('#modal-create-submit').onclick=async()=>{const f=$('#create-modal-form');if(!f.reportValidity())return;const payload={name:$('#m-name').value.trim(),mode:$('#m-mode').value,max_players:Number($('#m-cap').value),starts_at:new Date($('#m-start').value).toISOString(),region:$('#m-region').value,entry_fee:Number($('#m-fee').value||0),prize_type:$('#m-prize').value.trim()||'Community event',color:$('#m-color').value,image_url:urlSafe($('#m-image').value),description:$('#m-desc').value.trim()};closeModal();await createTournament(payload);};$$('[data-cancel]').forEach(b=>b.onclick=closeModal);}
@@ -3123,14 +3028,15 @@ function clearPreview(){state.notifications=state.notifications.filter(n=>!n.loc
 function saveProfile(){const username=$('#profile-display-name').value.trim().slice(0,32),region=$('#profile-region').value,bio=$('#profile-bio-input').value.trim().slice(0,180);if(!username){toast('Name required','Choose a display name before saving.','error');return;}state.profile={username,region,bio};store.set('profile',state.profile);if(state.client&&state.user)state.client.from('profiles').upsert({id:state.user.id,username,discord_id:state.user.user_metadata?.provider_id||null,avatar_url:currentAvatar()},{onConflict:'id'}).then(({error})=>error&&toast('Saved locally','Database profile could not be updated. Check RLS.','warning'));renderProfile();toast('Profile saved','Your display preferences were updated.');}
 function saveEmotes(){state.emotes=$$('#profile-emotes input:checked').map(x=>x.value);store.set('emotes',state.emotes);toast('Emote preferences saved',`${state.emotes.length} preference${state.emotes.length===1?'':'s'} saved on this device.`);}
 function celebrate(){const colors=['#9b7bff','#61f1dc','#ffd36e','#ff76c8','#6cf0a6'];for(let i=0;i<32;i++){const p=document.createElement('i');p.className='confetti';p.style.left=`${Math.random()*100}vw`;p.style.background=colors[i%colors.length];p.style.animationDelay=`${Math.random()*.7}s`;document.body.append(p);setTimeout(()=>p.remove(),3400);}}
-function renderAdmin(){if(!state.isAdmin)return;$('#admin-event-list').innerHTML=state.tournaments.length?state.tournaments.map(t=>`<div class="quick-action"><span class="quick-icon">◈</span><span class="quick-copy"><strong>${esc(t.name)}</strong><span>${esc(t.mode)} · ${esc(dateFmt(t.starts_at))} · ${fmt(t.entry_fee)} credits</span></span><button class="btn small danger" data-action="delete" data-id="${esc(t.id)}">Delete</button></div>`).join(''):'<div class="empty-state"><strong>No events to manage</strong><span>Create a tournament using the form.</span></div>';$('#admin-credit-audit').innerHTML=state.transactions.length?state.transactions.slice(0,12).map(t=>`<div class="activity-item"><div class="activity-icon yellow">✦</div><div class="activity-copy"><strong>${esc(t.description||t.kind||'Credit transaction')}</strong><p>${esc(ago(t.created_at))}</p></div><span class="score">${Number(t.amount)>0?'+':''}${fmt(t.amount)}</span></div>`).join(''):'<div class="empty-state"><strong>No audit activity</strong><span>Transactions appear after database setup.</span></div>';$('#admin-announcement-list').innerHTML=state.notifications.filter(n=>['news','tournament'].includes(n.category)).slice(0,10).map(n=>`<div class="activity-item"><div class="activity-icon purple">◉</div><div class="activity-copy"><strong>${esc(n.title)}</strong><p>${esc(n.body)}</p></div></div>`).join('')||'<div class="empty-state"><strong>No announcements yet</strong></div>';renderShop();}
+function renderAdmin(){if(!state.isAdmin)return;$('#admin-event-list').innerHTML=state.tournaments.length?state.tournaments.map(t=>`<div class="quick-action"><span class="quick-icon">◈</span><span class="quick-copy"><strong>${esc(t.name)}</strong><span>${esc(t.mode)} · ${esc(dateFmt(t.starts_at))} · ${fmt(t.entry_fee)} credits</span></span><button class="btn small danger" data-action="delete" data-id="${esc(t.id)}">Delete</button></div>`).join(''):'<div class="empty-state"><strong>No events to manage</strong><span>Create a tournament using the form.</span></div>';$('#admin-announcement-list').innerHTML=state.notifications.filter(n=>['news','tournament'].includes(n.category)).slice(0,10).map(n=>`<div class="activity-item"><div class="activity-icon purple">◉</div><div class="activity-copy"><strong>${esc(n.title)}</strong><p>${esc(n.body)}</p></div></div>`).join('')||'<div class="empty-state"><strong>No announcements yet</strong></div>';renderShop();}
 function renderAll(){renderAuth();renderTournaments();renderLeaderboard();renderWallet();renderShop();renderNotifications();renderProfile();if(state.isAdmin)renderAdmin();}
-function setupEvents(){document.addEventListener('click',async e=>{const nav=e.target.closest('[data-page],[data-nav],[data-go]');if(nav){e.preventDefault();switchPage(nav.dataset.page||nav.dataset.nav||nav.dataset.go);return;}const a=e.target.closest('[data-action]');if(a){if(a.dataset.action==='details')details(a.dataset.id);if(a.dataset.action==='create')createModal();if(a.dataset.action==='buy')buyItem(a.dataset.id);if(a.dataset.action==='read')readNotification(a.dataset.id);if(a.dataset.action==='delete')deleteTournament(a.dataset.id);}});
+function setupEvents(){document.addEventListener('click',async e=>{const ub=e.target.closest('[data-unban]');if(ub){if(!state.isOwner)return;try{const rr=await state.client.rpc('sl_owner_unban_user',{p_ban_id:ub.dataset.unban});if(rr.error)throw rr.error;toast('User unbanned','The ban was lifted.');await loadOwnerPanel();}catch(err){toast('Unban failed',readError(err),'error');}return;}const nav=e.target.closest('[data-page],[data-nav],[data-go]');if(nav){e.preventDefault();switchPage(nav.dataset.page||nav.dataset.nav||nav.dataset.go);return;}const a=e.target.closest('[data-action]');if(a){if(a.dataset.action==='details')details(a.dataset.id);if(a.dataset.action==='create')createModal();if(a.dataset.action==='buy')buyItem(a.dataset.id);if(a.dataset.action==='read')readNotification(a.dataset.id);if(a.dataset.action==='delete')deleteTournament(a.dataset.id);}});
 $('#signin-button').addEventListener('click',()=>{if(!state.user){signIn();return;}openModal('Sign out of Stumble Labs?','Your account data remains in Supabase.','<p class="muted" style="font-size:11px">You can sign back in with Discord at any time.</p>','<button class="btn" data-cancel>Stay signed in</button><button class="btn danger" id="confirm-signout">Sign out</button>',true);$$('[data-cancel]').forEach(b=>b.onclick=closeModal);$('#confirm-signout').onclick=async()=>{closeModal();await signOut();};});
 $('#notification-button').onclick=()=>switchPage('notifications');$('#view-notifications').onclick=()=>switchPage('notifications');$('#create-tournament-button').onclick=createModal;$('#refresh-tournaments').onclick=async()=>{await loadPlatform();renderAll();toast('Refreshed','Tournament data reloaded.');};$('#wallet-refresh').onclick=async()=>{await loadAccount();renderWallet();toast('Wallet refreshed','Latest available balance loaded.');};$('#admin-refresh').onclick=async()=>{await loadPlatform();renderAll();};
 ['tournament-search','tournament-mode-filter','tournament-status-filter','tournament-sort'].forEach(id=>$('#'+id).addEventListener(id==='tournament-search'?'input':'change',renderTournaments));$('#home-modes').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;state.mode=b.dataset.mode;$$('#home-modes [data-mode]').forEach(x=>x.classList.toggle('active',x===b));renderTournaments();};
 $('#modal-close').onclick=closeModal;$('#modal-backdrop').onclick=e=>{if(e.target===$('#modal-backdrop'))closeModal();};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});$('#mark-all-read').onclick=markAllRead;$('#clear-notifications').onclick=clearPreview;$('#notification-filter').onchange=renderNotifications;$('#save-profile').onclick=saveProfile;$('#profile-edit-button').onclick=()=>{switchPage('profile');$('#profile-display-name').focus();};$('#save-emotes').onclick=saveEmotes;
-$('#admin-tournament-form').onsubmit=async e=>{e.preventDefault();await createTournament({name:$('#admin-event-name').value.trim(),mode:$('#admin-event-mode').value,max_players:Number($('#admin-event-cap').value),starts_at:new Date($('#admin-event-start').value).toISOString(),region:$('#admin-event-region').value,entry_fee:Number($('#admin-event-fee').value||0),prize_type:$('#admin-event-prize').value.trim()||'Community event',color:$('#admin-event-color').value,image_url:urlSafe($('#admin-event-image').value),description:$('#admin-event-description').value.trim()});e.target.reset();};
+$('#owner-ban-form').onsubmit=async e=>{e.preventDefault();if(!state.isOwner||!state.client){toast('Owner access required','Sign in with the configured owner account.','error');return;}const user=$('#owner-ban-user').value.trim(),reason=$('#owner-ban-reason').value.trim();if(!uuidValid(user)||!reason){toast('Invalid input','Enter a valid UUID and reason.','error');return;}try{const r=await state.client.rpc('sl_owner_ban_user',{p_user_id:user,p_reason:reason});if(r.error)throw r.error;toast('User banned','The ban and audit event were recorded.');e.target.reset();await loadOwnerPanel();}catch(err){toast('Ban failed',readError(err),'error',7000);}};$('#owner-refresh').onclick=loadOwnerPanel;
+
 $('#grant-credits-form').onsubmit=async e=>{e.preventDefault();await grantCredits($('#grant-user-id').value.trim(),Number($('#grant-amount').value),$('#grant-reason').value);e.target.reset();};$('#announcement-form').onsubmit=async e=>{e.preventDefault();await publishAnnouncement($('#announcement-title').value,$('#announcement-body').value,$('#announcement-category').value,$('#announcement-audience').value);e.target.reset();};
 $$('.admin-tab').forEach(b=>b.onclick=()=>{$$('.admin-tab').forEach(x=>x.classList.toggle('active',x===b));$$('.admin-pane').forEach(x=>x.classList.toggle('active',x.id===b.dataset.adminTab));});
 ['tournaments','credits','news'].forEach(k=>$('#pref-'+k).onchange=e=>{state.preferences[k]=e.target.checked;store.set('preferences',state.preferences);});}
