@@ -3041,8 +3041,8 @@ $('#grant-credits-form').onsubmit=async e=>{e.preventDefault();await grantCredit
 $$('.admin-tab').forEach(b=>b.onclick=()=>{$$('.admin-tab').forEach(x=>x.classList.toggle('active',x===b));$$('.admin-pane').forEach(x=>x.classList.toggle('active',x.id===b.dataset.adminTab));});
 ['tournaments','credits','news'].forEach(k=>$('#pref-'+k).onchange=e=>{state.preferences[k]=e.target.checked;store.set('preferences',state.preferences);});}
 async function boot(){
-setTimeout(()=>document.getElementById('splash')?.classList.add('done'),700);
-state.profile=store.get('profile',{username:'',region:'Global',bio:''});
+state.profile=store.get('profile',{username:'',region:'Global',bio:''});state.preferences=store.get('preferences',{tournaments:true,credits:true,news:true});state.emotes=store.get('emotes',['Punch','Kick','Hug','Banana']);state.notifications=[...SEED_NOTICES,...store.get('notifications',[])];state.balance=0;state.transactions=[];state.purchases=[];state.registrations=store.get('registrations',[]);['tournaments','credits','news'].forEach(k=>$('#pref-'+k).checked=state.preferences[k]);setupEvents();const tick=()=>{$('#live-clock').textContent='LOCAL TIME '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});$('#footer-year').textContent=new Date().getFullYear();};tick();setInterval(tick,30000);setTimeout(()=>$('#splash').classList.add('done'),700);await initSupabase();const page=location.hash.slice(1);if(['dashboard','tournaments','leaderboard','shop','wallet','profile','notifications','admin'].includes(page))switchPage(page);renderAll();}
+boot().catch(e=>{console.error(e);toast('Startup issue','Some live features may be unavailable. Reload to retry.','error');});
 </script>
 </body>
 </html>
